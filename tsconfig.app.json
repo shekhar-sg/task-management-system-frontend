@@ -19,6 +19,12 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
 
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
