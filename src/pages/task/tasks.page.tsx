@@ -35,7 +35,11 @@ const TasksPage = () => {
       <h1 className="text-2xl font-bold mb-4">Tasks</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mb-6 space-y-4 bg-white p-4 rounded-lg shadow">
         <div>
-          <input placeholder="Task Title" {...register('title')} className="w-full px-3 py-2 border rounded" />
+          <input
+            placeholder="TaskDetailsPanel Title"
+            {...register('title')}
+            className="w-full px-3 py-2 border rounded"
+          />
           {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
         </div>
 
@@ -68,7 +72,7 @@ const TasksPage = () => {
           disabled={createTask.isPending}
           className="bg-amber-500 hover:bg-amber-600 rounded-xl px-4 py-2 text-white disabled:opacity-50"
         >
-          {createTask.isPending ? 'Adding...' : 'Add Task'}
+          {createTask.isPending ? 'Adding...' : 'Add TaskDetailsPanel'}
         </button>
       </form>
 

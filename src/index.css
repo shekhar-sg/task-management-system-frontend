@@ -1,3 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.625rem;
+    --background: oklch(0.98 0.01 250);        /* #f4f6fb */
+    --card: oklch(1 0 0);                      /* #ffffff */
+    --popover: oklch(1 0 0);
+    --foreground: oklch(0.20 0 0);             /* #1a1a1a */
+    --card-foreground: oklch(0.20 0 0);
+    --popover-foreground: oklch(0.20 0 0);
+    --primary: oklch(0.00 0 0);                /* #000000 */
+    --primary-foreground: oklch(0.98 0.01 250);
+    --secondary: oklch(0.55 0.17 255);         /* #1976d2 */
+    --secondary-foreground: oklch(1 0 0);
+    --destructive: oklch(0.55 0.22 25);        /* #d32f2f */
+    --success: oklch(0.52 0.18 145);           /* #388e3c */
+    --warning: oklch(0.82 0.16 95);            /* #fbc02d */
+    --info: oklch(0.60 0.19 230);              /* #0288d1 */
+    --muted: oklch(0.96 0 0);
+    --muted-foreground: oklch(0.46 0 0);       /* #4f5b62 */
+    --border: oklch(0.90 0 0);                 /* #e0e0e0 */
+    --input: oklch(0.90 0 0);
+    --ring: oklch(0.55 0.17 255);
+  }
+
+  .dark {
+     --background: oklch(0.18 0.01 250);        /* #181a20 */
+     --card: oklch(0.22 0.01 250);              /* #23272f */
+     --popover: oklch(0.22 0.01 250);
+     --foreground: oklch(0.92 0 0);             /* #e3e3e3 */
+     --card-foreground: oklch(0.92 0 0);
+     --popover-foreground: oklch(0.92 0 0);
+     --primary: oklch(1 0 0);                   /* #ffffff */
+     --primary-foreground: oklch(0.18 0.01 250);
+     --secondary: oklch(0.75 0.12 240);         /* #90caf9 */
+     --secondary-foreground: oklch(0.12 0 0);
+     --destructive: oklch(0.70 0.24 25);        /* #ff6659 */
+     --success: oklch(0.72 0.18 145);           /* #66bb6a */
+     --warning: oklch(0.78 0.18 85);            /* #ffa726 */
+     --info: oklch(0.72 0.19 215);              /* #29b6f6 */
+     --muted: oklch(0.28 0 0);
+     --muted-foreground: oklch(0.72 0 0);       /* #b0b8c1 */
+     --border: oklch(0.32 0 0);                 /* #31363f */
+     --input: oklch(0.32 0 0);
+     --ring: oklch(0.75 0.12 240);
+     }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

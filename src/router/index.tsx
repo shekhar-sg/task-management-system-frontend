@@ -1,8 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { ProtectedRoute } from '@/components/ProtectedRoute.tsx';
-import Layout from '@/Layout.tsx';
-import Login from '@/pages/Login.tsx';
-import TasksPage from '@/pages/task/tasks.page.tsx';
+import Layout from '@/Layout';
+import Login from '@/pages/Login';
+import DashboardLayout from '@/pages/task/DashboardLayout';
 
 export const router = createBrowserRouter([
   {
@@ -12,10 +11,10 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
+      // <ProtectedRoute>
+      <Layout />
+      // </ProtectedRoute>
     ),
-    children: [{ index: true, element: <TasksPage /> }],
+    children: [{ index: true, element: <DashboardLayout /> }],
   },
 ]);
