@@ -1,6 +1,6 @@
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {taskService} from '@/modules/tasks/task.service.ts';
-import type {UpdateTaskPayload} from '@/modules/tasks/task.types.ts';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { taskService } from '@/modules/tasks/task.service.ts';
+import type { UpdateTaskPayload } from '@/modules/tasks/task.types.ts';
 
 export const TASKS_QUERY_KEY = ['tasks'];
 

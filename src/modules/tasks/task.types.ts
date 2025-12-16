@@ -22,7 +22,7 @@ export type Task = {
 export type CreateTaskPayload = {
   title: string;
   description?: string;
-  dueDate?: Date;
+  dueDate?: string;
   priority: Priority;
   assignedToId?: string;
 };
@@ -30,7 +30,7 @@ export type CreateTaskPayload = {
 export type UpdateTaskPayload = Partial<{
   title: string;
   description: string;
-  dueDate: Date;
+  dueDate: string;
   priority: Priority;
   status: TaskStatus;
   assignedToId: string;
@@ -45,4 +45,3 @@ export type GetAllTasksResponse = {
   message: string;
   tasks: Task[];
 };
-

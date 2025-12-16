@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { ProtectedRoute } from '@/components/ProtectedRoute.tsx';
 import Layout from '@/Layout.tsx';
-import Dashboard from '@/pages/Dashboard.tsx';
 import Login from '@/pages/Login.tsx';
+import TasksPage from '@/pages/task/tasks.page.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +16,6 @@ export const router = createBrowserRouter([
         <Layout />
       </ProtectedRoute>
     ),
-    children: [{ index: true, element: <Dashboard /> }],
+    children: [{ index: true, element: <TasksPage /> }],
   },
 ]);
