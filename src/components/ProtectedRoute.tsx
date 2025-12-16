@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuthInit, useAuthStore } from '@/modules/auth';
+import { useAuthStore } from '@/modules/auth';
 
 type ProtectedRouteProps = {
   children: ReactNode;
 };
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  useAuthInit();
   const { isAuthenticated, isAuthLoading } = useAuthStore();
   console.log({ isAuthLoading, isAuthenticated });
 
