@@ -1,11 +1,11 @@
-import { api } from '@/api/axios.ts';
+import { api } from "@/api/axios.ts";
 import type {
   CreateTaskPayload,
   CreateTaskResponse,
   GetAllTasksResponse,
   Task,
   UpdateTaskPayload,
-} from '@/modules/tasks/task.types.ts';
+} from "@/modules/tasks/task.types.ts";
 
 export const taskService = {
   getAll: async (): Promise<Task[]> => {

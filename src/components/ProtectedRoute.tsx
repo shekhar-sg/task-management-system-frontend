@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuthStore } from '@/modules/auth';
+import type { ReactNode } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuthStore } from "@/modules/auth";
 
 type ProtectedRouteProps = {
   children: ReactNode;

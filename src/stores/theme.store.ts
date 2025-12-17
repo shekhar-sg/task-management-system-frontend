@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-type Theme = 'light' | 'dark';
+type Theme = "light" | "dark";
 
 interface ThemeState {
   theme: Theme;
@@ -12,21 +12,21 @@ interface ThemeState {
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
-      theme: 'light',
+      theme: "light",
       setTheme: (theme) => {
         set({ theme });
         applyTheme(theme);
       },
       toggleTheme: () => {
         set((state) => {
-          const newTheme = state.theme === 'light' ? 'dark' : 'light';
+          const newTheme = state.theme === "light" ? "dark" : "light";
           applyTheme(newTheme);
           return { theme: newTheme };
         });
       },
     }),
     {
-      name: 'theme-storage',
+      name: "theme-storage",
       onRehydrateStorage: () => (state) => {
         if (state) {
           applyTheme(state.theme);
@@ -38,12 +38,12 @@ export const useThemeStore = create<ThemeState>()(
 
 function applyTheme(theme: Theme) {
   const root = window.document.documentElement;
-  root.classList.remove('light', 'dark');
+  root.classList.remove("light", "dark");
   root.classList.add(theme);
 }
 
 // Initialize theme on load
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   const state = useThemeStore.getState();
   applyTheme(state.theme);
 }

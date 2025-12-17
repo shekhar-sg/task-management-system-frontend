@@ -1,10 +1,10 @@
-import { type FormEvent, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuthStore, useLogin } from '@/modules/auth';
+import { type FormEvent, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { useAuthStore, useLogin } from "@/modules/auth";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { mutate: login, isPending, error } = useLogin();
   const { isAuthenticated } = useAuthStore();
 
@@ -50,7 +50,7 @@ const Login = () => {
           </div>
           {error && (
             <div className="p-3 text-sm text-red-600 bg-red-50 rounded-md">
-              {error.message || 'Login failed. Please try again.'}
+              {error.message || "Login failed. Please try again."}
             </div>
           )}
           <button
@@ -58,7 +58,7 @@ const Login = () => {
             disabled={isPending}
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isPending ? 'Logging in...' : 'Login'}
+            {isPending ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

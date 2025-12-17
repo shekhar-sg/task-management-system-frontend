@@ -1,11 +1,22 @@
+import {Button} from "@/components/ui/button";
+import {useTaskStore} from "@/modules/tasks/task.store";
+
 const UserInformation = () => {
+  const { setIsTaskDetailPanelOpen } = useTaskStore();
   return (
-    <div className={'flex overflow-hidden rounded-xl flex-col border w-full md:w-[400px]'}>
-      <div className={'flex items-center bg-background h-16 px-6'}>
-        <h6 className={'text-xl'}>You</h6>
+    <>
+      <div className={"flex items-center bg-background h-16 px-6"}>
+        <h6 className={"text-xl"}>You</h6>
       </div>
-      <div className={'w-full h-full shadow-inner_soft bg-card'}></div>
-    </div>
+      <div className={"flex gap-4 w-full h-full p-6 shadow-inner_soft bg-card"}>
+        <Button variant={"outline"} onClick={() => setIsTaskDetailPanelOpen(true)}>
+          View Dashboard
+        </Button>
+        <Button variant={"outline"} onClick={() => setIsTaskDetailPanelOpen(true)}>
+          Create Task
+        </Button>
+      </div>
+    </>
   );
 };
 

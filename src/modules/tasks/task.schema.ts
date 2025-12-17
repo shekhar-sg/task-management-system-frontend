@@ -1,10 +1,10 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-const priorityEnum = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'] as const;
-const statusEnum = ['TODO', 'IN_PROGRESS', 'REVIEW', 'COMPLETED'] as const;
+const priorityEnum = ["LOW", "MEDIUM", "HIGH", "URGENT"] as const;
+const statusEnum = ["TODO", "IN_PROGRESS", "REVIEW", "COMPLETED"] as const;
 
 export const createTaskSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title cannot exceed 100 characters'),
+  title: z.string().min(1, "Title is required").max(100, "Title cannot exceed 100 characters"),
   description: z.string().optional(),
   dueDate: z.string().optional(),
   priority: z.enum(priorityEnum),
@@ -12,7 +12,7 @@ export const createTaskSchema = z.object({
 });
 
 export const updateTaskSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(100, 'Title cannot exceed 100 characters').optional(),
+  title: z.string().min(1, "Title is required").max(100, "Title cannot exceed 100 characters").optional(),
   description: z.string().optional(),
   dueDate: z.string().optional(),
   priority: z.enum(priorityEnum).optional(),

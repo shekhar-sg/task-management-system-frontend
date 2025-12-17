@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { connectSocket, disconnectSocket } from '@/api/socket.ts';
-import { authService } from '@/modules/auth/auth.service.ts';
-import { useAuthStore } from '@/modules/auth/auth.store.ts';
+import { useMutation } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { connectSocket, disconnectSocket } from "@/api/socket";
+import { authService } from "@/modules/auth/auth.service";
+import { useAuthStore } from "@/modules/auth/auth.store";
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -38,7 +38,7 @@ export const useAuthInit = () => {
         setUser(data.user);
         connectSocket();
       } catch (error) {
-        console.error('Auth check failed:', error);
+        console.error("Auth check failed:", error);
         clearUser();
         disconnectSocket();
       } finally {

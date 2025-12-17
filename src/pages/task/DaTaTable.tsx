@@ -1,12 +1,13 @@
-import { type ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {type ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
+import {Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import DataTableToolbar from "@/pages/task/DataTableToolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
+const DaTaTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
   const { columns, data } = props;
 
   const table = useReactTable({
@@ -15,7 +16,8 @@ const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <div className={'overflow-hidden rounded-sm border'}>
+    <div className={"overflow-hidden rounded-sm border"}>
+      <DataTableToolbar table={table} />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -33,7 +35,7 @@ const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} className={'hover:bg-muted h-12 transition-colors'}>
+              <TableRow key={row.id} className={"hover:bg-muted h-12 transition-colors"}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                 ))}
@@ -41,13 +43,24 @@ const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className={'h-32 text-center'}></TableCell>
+              <TableCell colSpan={columns.length} className={"h-32 text-center"}></TableCell>
             </TableRow>
           )}
         </TableBody>
+        <TableFooter>
+          {table.getFooterGroups().map((footerGroup) => (
+            <TableRow key={footerGroup.id}>
+              {footerGroup.headers.map((header) => (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableFooter>
       </Table>
     </div>
   );
 };
 
-export default DataTable;
+export default DaTaTable;

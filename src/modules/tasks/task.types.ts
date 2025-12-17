@@ -1,5 +1,5 @@
-export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'REVIEW' | 'COMPLETED';
-export type Priority = 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+export type TaskStatus = "TODO" | "IN_PROGRESS" | "REVIEW" | "COMPLETED";
+export type Priority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 
 export type Task = {
   id: string;

@@ -1,15 +1,15 @@
-import { createBrowserRouter } from 'react-router-dom';
-import Layout from '@/Layout';
-import Login from '@/pages/Login';
-import DashboardLayout from '@/pages/task/DashboardLayout';
+import {createBrowserRouter} from "react-router-dom";
+import Layout from "@/Layout";
+import Login from "@/pages/Login";
+import DashboardLayout from "@/pages/task/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
+    path: "/login",
     element: <Login />,
   },
   {
-    path: '/',
+    path: "/",
     element: (
       // <ProtectedRoute>
       <Layout />

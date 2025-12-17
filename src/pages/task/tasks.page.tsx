@@ -1,6 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { type CreateTaskInput, createTaskSchema, useCreateTask, useTasks } from '@/modules/tasks';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { type CreateTaskInput, createTaskSchema, useCreateTask, useTasks } from "@/modules/tasks";
 
 const TasksPage = () => {
   const { data: tasks, isLoading } = useTasks();
@@ -37,7 +37,7 @@ const TasksPage = () => {
         <div>
           <input
             placeholder="TaskDetailsPanel Title"
-            {...register('title')}
+            {...register("title")}
             className="w-full px-3 py-2 border rounded"
           />
           {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
@@ -46,18 +46,18 @@ const TasksPage = () => {
         <div>
           <textarea
             placeholder="Description (optional)"
-            {...register('description')}
+            {...register("description")}
             className="w-full px-3 py-2 border rounded"
           />
         </div>
 
         <div>
-          <input type="datetime-local" {...register('dueDate')} className="w-full px-3 py-2 border rounded" />
+          <input type="datetime-local" {...register("dueDate")} className="w-full px-3 py-2 border rounded" />
           {errors.dueDate && <p className="text-red-500 text-sm mt-1">{errors.dueDate.message}</p>}
         </div>
 
         <div>
-          <select {...register('priority')} className="w-full px-3 py-2 border rounded">
+          <select {...register("priority")} className="w-full px-3 py-2 border rounded">
             <option value="">Select Priority</option>
             <option value="LOW">Low</option>
             <option value="MEDIUM">Medium</option>
@@ -72,7 +72,7 @@ const TasksPage = () => {
           disabled={createTask.isPending}
           className="bg-amber-500 hover:bg-amber-600 rounded-xl px-4 py-2 text-white disabled:opacity-50"
         >
-          {createTask.isPending ? 'Adding...' : 'Add TaskDetailsPanel'}
+          {createTask.isPending ? "Adding..." : "Add TaskDetailsPanel"}
         </button>
       </form>
 

@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { disconnectSocket } from '@/api/socket.ts';
-import { useAuthStore } from '@/modules/auth';
+import axios from "axios";
+import { disconnectSocket } from "@/api/socket.ts";
+import { useAuthStore } from "@/modules/auth";
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api",
   withCredentials: true,
 });
 
