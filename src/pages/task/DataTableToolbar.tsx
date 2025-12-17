@@ -1,6 +1,6 @@
-import type { Table } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
-import { useTaskStore } from "@/modules/tasks/task.store";
+import type {Table} from "@tanstack/react-table";
+import {Button} from "@/components/ui/button";
+import {useTaskStore} from "@/modules/tasks/task.store";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -8,14 +8,20 @@ interface DataTableToolbarProps<TData> {
 
 const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
   const { table } = props;
-  const { isTaskDetailPanelOpen, setIsTaskDetailPanelOpen } = useTaskStore();
+  const { setIsTaskDetailPanelOpen, setIsEditing, setSelectedTask } = useTaskStore();
   return (
     <div className={"flex items-center justify-between p-4"}>
       <div className="text-sm text-muted-foreground">
-        {table.getFilteredRowModel().rows.length} of {table.getRowModel().rows.length} results
+        {table.getRowModel().rows.length} of {table.getFilteredRowModel().rows.length} results
       </div>
-      {/* Additional toolbar actions can be added here */}
-      <Button variant={"default"} onClick={() => setIsTaskDetailPanelOpen(!isTaskDetailPanelOpen)}>
+      <Button
+        variant={"default"}
+        onClick={() => {
+          setSelectedTask(null);
+          setIsEditing(false);
+          setIsTaskDetailPanelOpen(true);
+        }}
+      >
         Create Task
       </Button>
     </div>

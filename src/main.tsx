@@ -6,12 +6,18 @@ import { useAuthInit } from "@/modules/auth";
 import { router } from "./router";
 import "./index.css";
 import "@/stores/theme.store";
+import { Toaster } from "@/components/ui/sonner";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useAuthInit();
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster />
+    </>
+  );
 };
 
 const rootElement = document.getElementById("root");

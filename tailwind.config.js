@@ -36,6 +36,10 @@ export default {
   				DEFAULT: 'var(--info)',
   				foreground: 'var(--info-foreground)'
   			},
+			success: {
+  				DEFAULT: 'var(--success)',
+  				foreground: 'var(--success-foreground)'
+  			},
   			muted: {
   				DEFAULT: 'var(--muted)',
   				foreground: 'var(--muted-foreground)'

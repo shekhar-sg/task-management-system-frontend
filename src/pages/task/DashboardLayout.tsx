@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
+import { cn } from "@/lib/utils";
 import { useTaskStore } from "@/modules/tasks/task.store";
 import MainDashboard from "@/pages/task/MainDashboard";
 import TaskDetailsPanel from "@/pages/task/TaskDetailsPanel";
 import UserInformation from "@/pages/task/UserInformation";
-import { cn } from "@/lib/utils";
 
 const DashboardLayout = () => {
   const { isTaskDetailPanelOpen, setIsTaskDetailPanelOpen } = useTaskStore();

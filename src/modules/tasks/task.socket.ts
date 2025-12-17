@@ -1,6 +1,6 @@
 import type { QueryClient } from "@tanstack/react-query";
-import { getSocket } from "@/api/socket.ts";
-import { TASKS_QUERY_KEY } from "@/modules/tasks/task.hooks.ts";
+import { getSocket } from "@/api/socket";
+import { TASKS_QUERY_KEY } from "@/modules/tasks/task.hooks";
 
 export const registerTaskSocketEvents = (queryClient: QueryClient) => {
   const socket = getSocket();

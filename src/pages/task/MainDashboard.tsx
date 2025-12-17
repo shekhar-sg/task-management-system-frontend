@@ -1,15 +1,15 @@
-import {LogOut} from "lucide-react";
-import {useEffect} from "react";
-import {useMediaQuery} from "react-responsive";
-import {ThemeToggle} from "@/components/ThemeToggle";
-import {Button} from "@/components/ui/button";
-import {ButtonGroupSeparator} from "@/components/ui/button-group";
-import {cn} from "@/lib/utils";
-import {useLogout} from "@/modules/auth";
-import {useTaskStore} from "@/modules/tasks/task.store";
-import {columns} from "@/pages/task/columns";
+import { LogOut } from "lucide-react";
+import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { ButtonGroupSeparator } from "@/components/ui/button-group";
+import { cn } from "@/lib/utils";
+import { useLogout } from "@/modules/auth";
+import { useTaskStore } from "@/modules/tasks/task.store";
+import { columns } from "@/pages/task/columns";
 import DaTaTable from "@/pages/task/DaTaTable";
-import {tasks} from "@/pages/task/type.constants";
+import { tasks } from "@/pages/task/type.constants";
 
 const MainDashboard = () => {
   const logout = useLogout();

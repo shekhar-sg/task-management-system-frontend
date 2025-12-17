@@ -1,5 +1,5 @@
-import {Button} from "@/components/ui/button";
-import {useTaskStore} from "@/modules/tasks/task.store";
+import { Button } from "@/components/ui/button";
+import { useTaskStore } from "@/modules/tasks/task.store";
 
 const UserInformation = () => {
   const { setIsTaskDetailPanelOpen } = useTaskStore();

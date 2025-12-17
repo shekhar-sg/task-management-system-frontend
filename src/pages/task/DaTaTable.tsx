@@ -1,5 +1,13 @@
-import {type ColumnDef, flexRender, getCoreRowModel, useReactTable} from "@tanstack/react-table";
-import {Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import {ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import DataTableToolbar from "@/pages/task/DataTableToolbar";
 
 interface DataTableProps<TData, TValue> {
@@ -13,7 +21,13 @@ const DaTaTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
     columns,
+    getPaginationRowModel: getPaginationRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 8,
+      },
+    },
   });
   return (
     <div className={"overflow-hidden rounded-sm border"}>
@@ -47,18 +61,52 @@ const DaTaTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
             </TableRow>
           )}
         </TableBody>
-        <TableFooter>
-          {table.getFooterGroups().map((footerGroup) => (
-            <TableRow key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableFooter>
       </Table>
+      <div className={"flex justify-center px-6 py-3 border-t items-center gap-2"}>
+        {/*<div className="text-muted-foreground text-sm">*/}
+        {/*  Total {table.getFilteredRowModel().rows.length} results*/}
+        {/*</div>*/}
+        <Button
+          variant="default"
+          size="lg"
+          className="size-8"
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronsLeft />
+        </Button>
+        <Button
+          variant="default"
+          size="icon"
+          className="size-8"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        </div>
+        <Button
+          variant="default"
+          size="icon"
+          className="size-8"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <span className="sr-only">Go to next page</span>
+          <ChevronRight />
+        </Button>
+        <Button
+          variant="default"
+          size="lg"
+          className="size-8"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronsRight />
+        </Button>
+      </div>
     </div>
   );
 };

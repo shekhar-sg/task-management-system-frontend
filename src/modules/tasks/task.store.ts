@@ -6,11 +6,15 @@ type TaskState = {
   setSelectedTask: (task: Task | null) => void;
   isTaskDetailPanelOpen: boolean;
   setIsTaskDetailPanelOpen: (isOpen: boolean) => void;
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
 };
 
 export const useTaskStore = create<TaskState>((set) => ({
   selectedTask: null,
   isTaskDetailPanelOpen: false,
+  isEditing: false,
   setSelectedTask: (task: Task | null) => set({ selectedTask: task, isTaskDetailPanelOpen: !!task }),
   setIsTaskDetailPanelOpen: (isOpen: boolean) => set({ isTaskDetailPanelOpen: isOpen }),
+  setIsEditing: (isEditing: boolean) => set({ isEditing }),
 }));

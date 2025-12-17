@@ -1,0 +1,257 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  type CreateTaskInput,
+  createTaskSchema,
+  type Task,
+  type UpdateTaskInput,
+  updateTaskSchema,
+  useCreateTask,
+  useUpdateTask,
+} from "@/modules/tasks";
+
+interface TaskFormProps {
+  mode: "create" | "update";
+  task?: Task;
+  onSuccess?: () => void;
+  onCancel?: () => void;
+}
+
+const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
+  const createTask = useCreateTask();
+  const updateTask = useUpdateTask();
+
+  const form = useForm<CreateTaskInput | UpdateTaskInput>({
+    resolver: zodResolver(mode === "create" ? createTaskSchema : updateTaskSchema),
+    defaultValues: {
+      title: task?.title || "",
+      description: task?.description || "",
+      dueDate: task?.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : "",
+      priority: task?.priority,
+      assignedToId: task?.assignedToId || "",
+      ...(mode === "update" && { status: task?.status || "TODO" }),
+    },
+  });
+  useEffect(() => {
+    if (task && mode === "update") {
+      form.reset({
+        title: task.title,
+        description: task.description || "",
+        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : "",
+        priority: task.priority,
+        assignedToId: task.assignedToId || "",
+        status: task.status,
+      });
+    }
+  }, [task, mode, form]);
+
+  function onSubmit(data: CreateTaskInput | UpdateTaskInput) {
+    const payload = {
+      ...data,
+      dueDate: data.dueDate ? new Date(data.dueDate).toISOString() : undefined,
+    };
+
+    if (mode === "create") {
+      createTask.mutate(payload as CreateTaskInput, {
+        onSuccess: () => {
+          toast.success("Task created successfully!");
+          form.reset();
+          onSuccess?.();
+        },
+        onError: (error) => {
+          toast.error(`Failed to create task: ${error.message}`);
+        },
+      });
+    } else if (task) {
+      updateTask.mutate(
+        { id: task.id, payload: payload as UpdateTaskInput },
+        {
+          onSuccess: () => {
+            toast.success("Task updated successfully!");
+            onSuccess?.();
+          },
+          onError: (error) => {
+            toast.error(`Failed to update task: ${error.message}`);
+          },
+        }
+      );
+    }
+  }
+
+  const isSubmitting = mode === "create" ? createTask.isPending : updateTask.isPending;
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>{mode === "create" ? "Create New Task" : "Update Task"}</CardTitle>
+        <CardDescription>
+          {mode === "create" ? "Fill in the details to create a new task." : "Update the task details below."}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form id="task-form" onSubmit={form.handleSubmit(onSubmit)}>
+          <FieldGroup>
+            <Controller
+              name="title"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="task-title">Title *</FieldLabel>
+                  <Input
+                    {...field}
+                    id="task-title"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter task title"
+                    autoComplete="off"
+                  />
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              name="description"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="task-description">Description</FieldLabel>
+                  <InputGroup>
+                    <InputGroupTextarea
+                      {...field}
+                      id="task-description"
+                      placeholder="Enter task description (optional)"
+                      rows={4}
+                      className="min-h-24 resize-none"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    <InputGroupAddon align="block-end">
+                      <InputGroupText className="tabular-nums">{field.value?.length || 0} characters</InputGroupText>
+                    </InputGroupAddon>
+                  </InputGroup>
+                  <FieldDescription>Provide additional details about the task.</FieldDescription>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              name="priority"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="task-priority">Priority *</FieldLabel>
+                  <Select name={field.name} value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-[180px]" id="task-priority" aria-invalid={fieldState.invalid}>
+                      <SelectValue placeholder="Select a priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Priority</SelectLabel>
+                        <SelectItem value="LOW">Low</SelectItem>
+                        <SelectItem value="MEDIUM">Medium</SelectItem>
+                        <SelectItem value="HIGH">High</SelectItem>
+                        <SelectItem value="URGENT">Urgent</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            {mode === "update" && (
+              <Controller
+                name="status"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="task-status">Status</FieldLabel>
+                    <Select name={field.name} value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-[180px]" id="task-priority" aria-invalid={fieldState.invalid}>
+                        <SelectValue placeholder="Select a status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Status</SelectLabel>
+                          <SelectItem className={"bg-card"} value="TODO">
+                            To Do
+                          </SelectItem>
+                          <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+                          <SelectItem value="REVIEW">Review</SelectItem>
+                          <SelectItem value="COMPLETED">Completed</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+            )}
+
+            {/* Due Date Field */}
+            <Controller
+              name="dueDate"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="task-dueDate">Due Date</FieldLabel>
+                  <Input type="datetime-local" {...field} id="task-dueDate" aria-invalid={fieldState.invalid} />
+                  <FieldDescription>Set a deadline for this task (optional).</FieldDescription>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+            {/* Assigned To Field */}
+            <Controller
+              name="assignedToId"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="task-assignedTo">Assigned To (User ID)</FieldLabel>
+                  <Input
+                    {...field}
+                    id="task-assignedTo"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Enter user ID (optional)"
+                    autoComplete="off"
+                  />
+                  <FieldDescription>Enter the ID of the user to assign this task to.</FieldDescription>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </form>
+      </CardContent>
+      <CardFooter className="flex gap-2">
+        {onCancel && (
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+            Cancel
+          </Button>
+        )}
+        <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isSubmitting}>
+          Reset
+        </Button>
+        <Button type="submit" form="task-form" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : mode === "create" ? "Create Task" : "Update Task"}
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+};
+
+export default TaskForm;

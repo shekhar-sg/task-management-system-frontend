@@ -1,7 +1,7 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import { registerTaskSocketEvents } from '@/modules/tasks';
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { registerTaskSocketEvents } from "@/modules/tasks";
 
 const Layout = () => {
   const queryClient = useQueryClient();
