@@ -8,6 +8,7 @@ import {ButtonGroupSeparator} from "@/components/ui/button-group";
 import {useLogout} from "@/modules/auth";
 import {useTasks} from "@/modules/tasks";
 import {useTaskStore} from "@/modules/tasks/task.store";
+import ToggleNotification from "@/components/notification/ToggleNotification";
 
 const Dashboard = () => {
   const logout = useLogout();
@@ -24,6 +25,7 @@ const Dashboard = () => {
           <Button variant={"outline"} onClick={() => logout.mutate()}>
             <LogOut />
           </Button>
+          <ToggleNotification />
         </div>
       </div>
       <div className={"flex flex-col justify-between w-full h-full shadow-inner_soft bg-card"}>

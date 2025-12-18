@@ -246,7 +246,7 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
         <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isSubmitting}>
           Reset
         </Button>
-        <Button type="submit" form="task-form" disabled={isSubmitting}>
+        <Button type="submit" form="task-form" disabled={isSubmitting} className={"flex-1"}>
           {isSubmitting ? "Submitting..." : mode === "create" ? "Create Task" : "Update Task"}
         </Button>
       </CardFooter>

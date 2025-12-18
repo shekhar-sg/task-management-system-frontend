@@ -86,7 +86,6 @@ const TaskView = ({ task, onClose }: TaskViewProps) => {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Status and Priority Badges */}
         <div className="flex gap-2 flex-wrap">
           <Badge variant="outline" className={getStatusColor(task.status)}>
             {task.status.replace("_", " ")}

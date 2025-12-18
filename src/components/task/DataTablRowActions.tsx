@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type {Task} from "@/modules/tasks";
 import {useTaskStore} from "@/modules/tasks/task.store";
+import {useGlobalStore} from "@/stores/global.store";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -18,7 +19,8 @@ interface DataTableRowActionsProps<TData> {
 const DataTableRowActions = <TData,>({ row }: DataTableRowActionsProps<TData>) => {
   const { original } = row;
   const task = original as Task;
-  const { setSelectedTask, setIsTaskDetailPanelOpen, setIsEditing } = useTaskStore();
+  const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
+  const openContextPanel = useGlobalStore((state) => state.openContextPanel);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,8 +33,7 @@ const DataTableRowActions = <TData,>({ row }: DataTableRowActionsProps<TData>) =
         <DropdownMenuItem
           onClick={() => {
             setSelectedTask(task);
-            setIsEditing(false);
-            setIsTaskDetailPanelOpen(true);
+            openContextPanel("TASK_DETAILS");
           }}
         >
           View Details
@@ -40,8 +41,7 @@ const DataTableRowActions = <TData,>({ row }: DataTableRowActionsProps<TData>) =
         <DropdownMenuItem
           onClick={() => {
             setSelectedTask(task);
-            setIsEditing(true);
-            setIsTaskDetailPanelOpen(true);
+            openContextPanel("TASK_UPDATE");
           }}
         >
           Edit
