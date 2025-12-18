@@ -6,9 +6,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight} from "lucide-react";
+import DataTableToolbar from "@/components/task/DataTableToolbar";
 import {Button} from "@/components/ui/button";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import DataTableToolbar from "@/pages/task/DataTableToolbar";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,7 +31,7 @@ const DaTaTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
   });
   return (
     <div className={"overflow-hidden rounded-sm border"}>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar key={data.length} table={table} />
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

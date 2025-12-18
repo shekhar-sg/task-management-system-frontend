@@ -13,3 +13,8 @@ export type LoginResponse = {
   user: User;
   message: string;
 };
+
+export type GetProfilePayload = {
+  message: string;
+  profile: User;
+};

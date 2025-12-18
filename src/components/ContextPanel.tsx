@@ -1,45 +1,17 @@
+import type {ReactNode} from "react";
 import {useMediaQuery} from "react-responsive";
 import {Sheet, SheetContent} from "@/components/ui/sheet";
 import {cn} from "@/lib/utils";
 import {useTaskStore} from "@/modules/tasks/task.store";
-import TaskForm from "./TaskForm";
-import TaskView from "./TaskView";
 
-const TaskDetailsPanel = () => {
-  const { isTaskDetailPanelOpen, setIsTaskDetailPanelOpen, selectedTask, isEditing } = useTaskStore();
+interface ContextPanelProps {
+  children?: ReactNode;
+}
+
+const ContextPanel = (props: ContextPanelProps) => {
+  const { children } = props;
+  const { isTaskDetailPanelOpen, setIsTaskDetailPanelOpen, selectedTask } = useTaskStore();
   const isBelowXl = useMediaQuery({ maxWidth: 1279 });
-
-  // Show TaskView if a task is selected, otherwise show TaskForm for creating
-  const content =
-    selectedTask && !isEditing ? (
-      <TaskView
-        task={selectedTask}
-        onClose={() => {
-          setIsTaskDetailPanelOpen(false);
-        }}
-      />
-    ) : selectedTask && isEditing ? (
-      <TaskForm
-        mode="update"
-        task={selectedTask}
-        onSuccess={() => {
-          setIsTaskDetailPanelOpen(false);
-        }}
-        onCancel={() => {
-          setIsTaskDetailPanelOpen(false);
-        }}
-      />
-    ) : (
-      <TaskForm
-        mode="create"
-        onSuccess={() => {
-          setIsTaskDetailPanelOpen(false);
-        }}
-        onCancel={() => {
-          setIsTaskDetailPanelOpen(false);
-        }}
-      />
-    );
 
   return (
     <>
@@ -56,7 +28,7 @@ const TaskDetailsPanel = () => {
                   ✕
                 </button>
               </div>
-              <div className="w-full h-full overflow-y-auto p-3">{content}</div>
+              <div className="w-full h-full overflow-y-auto p-3">{children}</div>
             </div>
           </SheetContent>
         </Sheet>
@@ -77,11 +49,11 @@ const TaskDetailsPanel = () => {
                 ✕
               </button>
             </div>
-            <div className="w-full h-full overflow-y-auto p-3">{content}</div>
+            <div className="w-full h-full overflow-y-auto p-3">{children}</div>
           </div>
         </div>
       )}
     </>
   );
 };
-export default TaskDetailsPanel;
+export default ContextPanel;

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useTaskStore } from "@/modules/tasks/task.store";
 
-const UserInformation = () => {
+const NavigationSidebar = () => {
   const { setIsTaskDetailPanelOpen } = useTaskStore();
   return (
     <>
@@ -20,4 +20,4 @@ const UserInformation = () => {
   );
 };
 
-export default UserInformation;
+export default NavigationSidebar;

@@ -2,8 +2,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Task } from "@/modules/tasks";
-import DataTableRowActions from "@/pages/task/DataTablRowActions";
-import { getPriorityColor, getStatusColor } from "@/pages/task/TaskView";
+import DataTableRowActions from "@/components/task/DataTablRowActions";
+import { getPriorityColor, getStatusColor } from "@/components/task/TaskView";
 
 export const columns: ColumnDef<Task>[] = [
   {

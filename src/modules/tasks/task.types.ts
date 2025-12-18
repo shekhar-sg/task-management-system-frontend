@@ -45,3 +45,11 @@ export type GetAllTasksResponse = {
   message: string;
   tasks: Task[];
 };
+
+export type TaskFilter = {
+  view?: "ASSIGNED" | "CREATED" | "ALL";
+  status?: TaskStatus;
+  priority?: Priority;
+  sortByDueDate?: "asc" | "desc";
+  overdue?: boolean;
+};
