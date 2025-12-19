@@ -1,39 +1,38 @@
 import type {Table} from "@tanstack/react-table";
-import {RotateCcw} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import type {Priority, TaskStatus} from "@/modules/tasks";
 import {useTaskStore} from "@/modules/tasks/task.store";
 import {useGlobalStore} from "@/stores/global.store";
+import {DataTableFacetedFilter} from "@/components/task/DataTableFilter";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
+export const priorityOptions: { label: string; value: Priority }[] = [
+  { label: "Low", value: "LOW" },
+  { label: "Medium", value: "MEDIUM" },
+  { label: "High", value: "HIGH" },
+  { label: "urgent", value: "URGENT" },
+];
+
+export const statusOptions: { label: string; value: TaskStatus }[] = [
+  { label: "To Do", value: "TODO" },
+  { label: "In Progress", value: "IN_PROGRESS" },
+  { label: "Done", value: "REVIEW" },
+  { label: "Completed", value: "COMPLETED" },
+];
+
 const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
   const { table } = props;
-  const { setSelectedTask, filters } = useTaskStore();
+  const { setSelectedTask } = useTaskStore();
   const { openContextPanel } = useGlobalStore();
   return (
     <div className={"flex items-center justify-between p-4"}>
-      <div
-        className="text-sm flex
-       text-muted-foreground"
-      >
+      <div className="text-sm flex items-center gap-3 text-muted-foreground">
         {table.getRowModel().rows.length} of {table.getFilteredRowModel().rows.length} results
-        {Object.keys(filters ?? {}).map((filterName) => {
-          const filterValue = (filters as any)[filterName];
-          if (!filterValue) return null;
-          return (
-            <h2 key={filterName} className={"ml-4"}>
-              {` ${filterName.charAt(0).toUpperCase() + filterName.slice(1)}: ${filterValue}`}
-            </h2>
-          );
-        })}
-        {filters?.view && (
-          <Button>
-            <RotateCcw />
-            Reset
-          </Button>
-        )}
+        <DataTableFacetedFilter title="Status" paramKey="status" options={statusOptions} />
+        <DataTableFacetedFilter title="Priority" paramKey="priority" options={priorityOptions} />
       </div>
       <Button
         variant={"default"}

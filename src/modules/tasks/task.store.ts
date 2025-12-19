@@ -13,9 +13,7 @@ type TaskState = {
 export const useTaskStore = create<TaskState>((set) => ({
   selectedTask: null,
   selectedTaskId: null,
-  filters: {
-    view: "ALL",
-  },
+  filters: undefined,
   setSelectedTask: (task: Task | null) => set({ selectedTask: task }),
   setFilters: (filters: TaskFilter | undefined) => set({ filters }),
   setSelectedTaskId: (id: string | null) => set({ selectedTaskId: id }),

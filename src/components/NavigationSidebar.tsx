@@ -1,19 +1,22 @@
-import {BadgeCheckIcon, ExternalLink, LogOut, User2} from "lucide-react";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import {Button} from "@/components/ui/button";
-import {CardDescription, CardTitle} from "@/components/ui/card";
-import {Item, ItemActions, ItemContent, ItemMedia, ItemTitle} from "@/components/ui/item";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import {type Task, useTasks, useTaskStore} from "@/modules/tasks";
-import {useGlobalStore} from "@/stores/global.store";
-import {useAuthStore, useLogout} from "@/modules/auth";
-import {Avatar, AvatarFallback} from "@/components/ui/avatar";
+import { BadgeCheckIcon, ExternalLink } from "lucide-react";
+import { useMemo } from "react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from "@/components/ui/item";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAuthStore } from "@/modules/auth";
+import { type Task, useTaskStore, useTasks } from "@/modules/tasks";
+import { useGlobalStore } from "@/stores/global.store";
 
 const NavigationSidebar = () => {
   const user = useAuthStore((store) => store.user);
-  const logout = useLogout();
-  const { data: createdTasks } = useTasks({ view: "CREATED" });
-  const { data: assignedTasks } = useTasks({ view: "ASSIGNED" });
+  const { data } = useTasks({ view: "CREATED,ASSIGNED" });
+  const createdTasks = useMemo(() => {
+    return data?.filter((task) => task.creatorId === user?.id) || [];
+  }, [data, user]);
+  const assignedTasks = useMemo(() => {
+    return data?.filter((task) => task.assignedToId === user?.id) || [];
+  }, [data, user]);
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const openContextPanel = useGlobalStore((state) => state.openContextPanel);
   const handleSelectTask = (task: Task) => {
@@ -35,25 +38,6 @@ const NavigationSidebar = () => {
           <TaskSection title="Assigned Tasks" tasks={assignedTasks} onSelectTask={handleSelectTask} />
         </Accordion>
       </div>
-
-      <Item variant={"default"} size={"default"}>
-        <ItemMedia>
-          <Avatar>
-            <AvatarFallback>
-              <User2 />
-            </AvatarFallback>
-          </Avatar>
-        </ItemMedia>
-        <ItemContent>
-          <CardTitle>{user?.name}</CardTitle>
-          <CardDescription>{user?.email}</CardDescription>
-        </ItemContent>
-        <ItemActions>
-          <Button variant={"outline"} onClick={() => logout.mutate()}>
-            <LogOut />
-          </Button>
-        </ItemActions>
-      </Item>
     </>
   );
 };

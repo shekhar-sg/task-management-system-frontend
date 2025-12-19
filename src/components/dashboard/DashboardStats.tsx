@@ -92,8 +92,8 @@ const DashboardStats = () => {
               card.statFor === "ASSIGNED" && "bg-blue-200 dark:bg-blue-900",
               card.statFor === "OVERDUE" && "bg-red-200 dark:bg-red-900",
               card.statFor === "NOTIFICATIONS" && "bg-green-200 dark:bg-green-900",
-              filters?.view === "CREATED" && card.statFor === "CREATED" && "border-white dark:border-white",
-              filters?.view === "ASSIGNED" && card.statFor === "ASSIGNED" && "border-white dark:border-white",
+              filters?.view?.includes("CREATED")  && card.statFor === "CREATED" && "border-white dark:border-white",
+              filters?.view?.includes("ASSIGNED") && card.statFor === "ASSIGNED" && "border-white dark:border-white",
               filters?.overdue && card.statFor === "OVERDUE" && "border-white dark:border-white"
             )}
             key={card.title + card.value}

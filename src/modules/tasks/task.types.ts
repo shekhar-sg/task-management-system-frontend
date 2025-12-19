@@ -55,9 +55,9 @@ export type GetAllTasksResponse = {
 };
 
 export type TaskFilter = {
-  view?: "ASSIGNED" | "CREATED" | "ALL";
-  status?: TaskStatus;
-  priority?: Priority;
+  view?: string
+  status?: string;
+  priority?: string;
   sortByDueDate?: "asc" | "desc";
   overdue?: boolean;
 };
