@@ -82,7 +82,7 @@ const DashboardStats = () => {
   ];
 
   return (
-    <div className="flex items-stretch h-full max-h-72 gap-4 p-4 overflow-x-scroll">
+    <div className="flex items-stretch h-72 gap-4 p-4 overflow-x-scroll">
       {cardStats.map((card) => {
         return (
           <Card

@@ -5,7 +5,7 @@ import {useGlobalStore} from "@/stores/global.store";
 const ToggleNotification = () => {
   const { openContextPanel } = useGlobalStore();
   return (
-    <Button variant={"default"} onClick={() => openContextPanel("NOTIFICATIONS")}>
+    <Button variant={"default"} size={"icon"} onClick={() => openContextPanel("NOTIFICATIONS")}>
       <BellDot />
     </Button>
   );
