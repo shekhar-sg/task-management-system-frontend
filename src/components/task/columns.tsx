@@ -1,9 +1,9 @@
 import type { ColumnDef } from "@tanstack/react-table";
+import DataTableRowActions from "@/components/task/DataTablRowActions";
+import { getPriorityColor, getStatusColor } from "@/components/task/TaskView";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Task } from "@/modules/tasks";
-import DataTableRowActions from "@/components/task/DataTablRowActions";
-import { getPriorityColor, getStatusColor } from "@/components/task/TaskView";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -74,6 +74,17 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div>
           <Badge variant={"outline"}>{row.getValue("dueDate")}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "creator",
+    header: "Creator",
+    cell: ({ row }) => {
+      return (
+        <div>
+          <Badge variant={"outline"}>{row.original.creator.name}</Badge>
         </div>
       );
     },

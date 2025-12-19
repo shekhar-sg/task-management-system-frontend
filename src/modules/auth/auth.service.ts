@@ -1,5 +1,5 @@
-import { api } from "@/api/axios.ts";
-import type { LoginPayload, LoginResponse, User } from "./auth.types.ts";
+import {api} from "@/api/axios";
+import type {GetProfilePayload, LoginPayload, LoginResponse, User} from "./auth.types";
 
 export const authService = {
   login: async (payload: LoginPayload): Promise<LoginResponse> => {
@@ -8,8 +8,8 @@ export const authService = {
   },
 
   me: async (): Promise<{ user: User }> => {
-    const { data } = await api.get<{ user: User }>("/auth/me");
-    return data;
+    const { data } = await api.get<GetProfilePayload>("/auth/me");
+    return { user: data.profile };
   },
 
   logout: async () => {

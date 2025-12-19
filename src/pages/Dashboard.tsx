@@ -1,14 +1,14 @@
-import {LogOut} from "lucide-react";
+import { LogOut } from "lucide-react";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import DaTaTable from "@/components/dashboard/DaTaTable";
-import {ThemeToggle} from "@/components/ThemeToggle";
-import {columns} from "@/components/task/columns";
-import {Button} from "@/components/ui/button";
-import {ButtonGroupSeparator} from "@/components/ui/button-group";
-import {useLogout} from "@/modules/auth";
-import {useTasks} from "@/modules/tasks";
-import {useTaskStore} from "@/modules/tasks/task.store";
 import ToggleNotification from "@/components/notification/ToggleNotification";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { columns } from "@/components/task/columns";
+import { Button } from "@/components/ui/button";
+import { ButtonGroupSeparator } from "@/components/ui/button-group";
+import { useLogout } from "@/modules/auth";
+import { useTasks } from "@/modules/tasks";
+import { useTaskStore } from "@/modules/tasks/task.store";
 
 const Dashboard = () => {
   const logout = useLogout();
@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className={"flex items-center bg-background justify-between h-16 px-6"}>
+      <div className={"flex items-center bg-background justify-between min-h-16 px-6"}>
         <h6 className={"text-xl"}>Dashboard</h6>
         <div className={"flex gap-4 items-center"}>
           <ThemeToggle />

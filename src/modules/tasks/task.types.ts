@@ -9,6 +9,9 @@ export type Task = {
   priority: Priority;
   status: TaskStatus;
   creatorId: string;
+  creator: {
+    name: string;
+  };
   assignedToId?: string;
   assignedTo?: {
     id: string;
@@ -37,6 +40,11 @@ export type UpdateTaskPayload = Partial<{
 }>;
 
 export type CreateTaskResponse = {
+  message: string;
+  task: Task;
+};
+
+export type GetTaskResponse = {
   message: string;
   task: Task;
 };

@@ -1,12 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useEffect} from "react";
+import {Controller, useForm} from "react-hook-form";
+import {toast} from "sonner";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Field, FieldDescription, FieldError, FieldGroup, FieldLabel} from "@/components/ui/field";
+import {Input} from "@/components/ui/input";
+import {InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea} from "@/components/ui/input-group";
 import {
   Select,
   SelectContent,
@@ -25,6 +25,8 @@ import {
   useCreateTask,
   useUpdateTask,
 } from "@/modules/tasks";
+import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
+import {useGetAllUsers} from "@/modules/users/user.hook";
 
 interface TaskFormProps {
   mode: "create" | "update";
@@ -36,6 +38,7 @@ interface TaskFormProps {
 const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
+  const { data } = useGetAllUsers();
 
   const form = useForm<CreateTaskInput | UpdateTaskInput>({
     resolver: zodResolver(mode === "create" ? createTaskSchema : updateTaskSchema),
@@ -200,8 +203,6 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
                 )}
               />
             )}
-
-            {/* Due Date Field */}
             <Controller
               name="dueDate"
               control={form.control}
@@ -214,21 +215,32 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
                 </Field>
               )}
             />
-
-            {/* Assigned To Field */}
             <Controller
               name="assignedToId"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="task-assignedTo">Assigned To (User ID)</FieldLabel>
-                  <Input
-                    {...field}
-                    id="task-assignedTo"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter user ID (optional)"
-                    autoComplete="off"
-                  />
+                  <Select name={field.name} value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-[220px]" id="task-assignedTo" aria-invalid={fieldState.invalid}>
+                      <SelectValue placeholder="Select a user" />
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Users</SelectLabel>
+                          <ScrollArea className={"h-full max-h-48"}>
+                            <div>
+                              {data?.map((user) => (
+                                <SelectItem key={user.id} value={user.id}>
+                                  {user.name}
+                                </SelectItem>
+                              ))}
+                              <ScrollBar orientation={"vertical"}></ScrollBar>
+                            </div>
+                          </ScrollArea>
+                        </SelectGroup>
+                      </SelectContent>
+                    </SelectTrigger>
+                  </Select>
                   <FieldDescription>Enter the ID of the user to assign this task to.</FieldDescription>
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>

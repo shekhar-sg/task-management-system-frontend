@@ -11,6 +11,7 @@ import {
 import type {Task} from "@/modules/tasks";
 import {useTaskStore} from "@/modules/tasks/task.store";
 import {useGlobalStore} from "@/stores/global.store";
+import {useAuthStore} from "@/modules/auth";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -19,6 +20,7 @@ interface DataTableRowActionsProps<TData> {
 const DataTableRowActions = <TData,>({ row }: DataTableRowActionsProps<TData>) => {
   const { original } = row;
   const task = original as Task;
+  const userId = useAuthStore((state) => state.userId);
   const setSelectedTask = useTaskStore((state) => state.setSelectedTask);
   const openContextPanel = useGlobalStore((state) => state.openContextPanel);
   return (
@@ -38,18 +40,22 @@ const DataTableRowActions = <TData,>({ row }: DataTableRowActionsProps<TData>) =
         >
           View Details
         </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            setSelectedTask(task);
-            openContextPanel("TASK_UPDATE");
-          }}
-        >
-          Edit
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        {(task.creatorId === userId || task.assignedToId === userId) && (
+          <>
+            <DropdownMenuItem
+              onClick={() => {
+                setSelectedTask(task);
+                openContextPanel("TASK_UPDATE");
+              }}
+            >
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              Delete
+              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

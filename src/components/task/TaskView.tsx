@@ -43,6 +43,8 @@ export const getStatusColor = (status: Task["status"]) => {
 
 const TaskView = ({ task, onClose }: TaskViewProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  // const { data: task, isLoading:taskLoading } = useGetTaskById(id);
+
   if (isEditing) {
     return (
       <TaskForm
@@ -125,7 +127,7 @@ const TaskView = ({ task, onClose }: TaskViewProps) => {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-muted-foreground mb-1">Created By</h3>
-            <p className="text-sm text-muted-foreground">User ID: {task.creatorId}</p>
+            <p className="text-sm text-muted-foreground">User {task.creator.name}</p>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-muted-foreground mb-1">Task ID</h3>

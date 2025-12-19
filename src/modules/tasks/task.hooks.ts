@@ -4,6 +4,13 @@ import type {TaskFilter, UpdateTaskPayload} from "@/modules/tasks/task.types.ts"
 
 export const TASKS_QUERY_KEY = ["tasks"];
 
+export const useGetTaskById = (id: string) => {
+  return useQuery({
+    queryFn: () => taskService.getTaskById(id),
+    queryKey: [...TASKS_QUERY_KEY, id],
+  });
+};
+
 export const useTasks = (filters?: TaskFilter) => {
   return useQuery({
     queryFn: () => taskService.getAll(filters),

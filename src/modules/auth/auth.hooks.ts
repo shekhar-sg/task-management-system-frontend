@@ -35,6 +35,7 @@ export const useAuthInit = () => {
     const checkAuth = async () => {
       try {
         const data = await authService.me();
+        console.log({data});
         setUser(data.user);
         connectSocket();
       } catch (error) {
