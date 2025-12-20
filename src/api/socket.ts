@@ -1,5 +1,5 @@
-import { getApiBaseUrl } from "@/api/axios";
 import { io, type Socket } from "socket.io-client";
+import { getApiBaseUrl } from "@/api/axios";
 
 let socket: Socket | null = null;
 
@@ -27,18 +27,6 @@ export const connectSocket = (): Socket => {
         reconnectionAttempts: 5,
         reconnectionDelay: 1000,
         transports: ["websocket", "polling"], // Try WebSocket first, fallback to polling
-    });
-
-    socket.on("connect", () => {
-        console.log("Socket.io connected:", socket?.id);
-    });
-
-    socket.on("disconnect", (reason) => {
-        console.log("Socket.io disconnected:", reason);
-    });
-
-    socket.on("connect_error", (error) => {
-        console.error("Socket.io connection error:", error.message);
     });
 
     return socket;
