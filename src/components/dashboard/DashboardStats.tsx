@@ -63,7 +63,7 @@ const DashboardStats = () => {
     () => [
       {
         statFor: "CREATED",
-        title: "Total Tasks Created",
+        title: "Created By You",
         value: stats.created,
         description: "That you have created",
         actionFor: "",
@@ -74,7 +74,7 @@ const DashboardStats = () => {
       },
       {
         statFor: "ASSIGNED",
-        title: "Total Tasks Assigned",
+        title: "Assigned To You",
         value: stats.assigned,
         description: "That are assigned to you",
         action: () => {
@@ -95,7 +95,7 @@ const DashboardStats = () => {
       },
       {
         statFor: "NOTIFICATIONS",
-        title: "Notifications",
+        title: "Notifications Received",
         value: data ? data.length : 0,
         description: "Total notifications received",
         action: () => {
