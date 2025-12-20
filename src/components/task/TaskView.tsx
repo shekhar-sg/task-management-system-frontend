@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { type Task, useTaskStore } from "@/modules/tasks";
+import { type Task, useGetTaskById, useTaskStore } from "@/modules/tasks";
 import { useGlobalStore } from "@/stores/global.store";
 
 export const getPriorityColor = (priority: Task["priority"]) => {
@@ -36,9 +36,10 @@ export const getStatusColor = (status: Task["status"]) => {
 };
 
 const TaskView = () => {
-  const { selectedTask: task, setSelectedTask } = useTaskStore();
+  const { selectedTask, setSelectedTask, selectedTaskId } = useTaskStore();
   const { openContextPanel, closeContextPanel: onClose } = useGlobalStore();
-
+  const { data } = useGetTaskById(!selectedTask && selectedTaskId ? selectedTaskId : undefined);
+  const task = selectedTask || data?.task;
   if (!task) {
     return <div>No task selected.</div>;
   }

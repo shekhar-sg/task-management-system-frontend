@@ -1,5 +1,3 @@
-import { BellRing, CheckCircle2Icon, LoaderIcon } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -7,11 +5,13 @@ import { useGetAllNotifications, useMarkAsRead } from "@/modules/notifications/n
 import type { Notification } from "@/modules/notifications/notinication.type";
 import { useTaskStore } from "@/modules/tasks";
 import { useGlobalStore } from "@/stores/global.store";
+import { BellRing, CheckCircle2Icon, LoaderIcon } from "lucide-react";
+import { toast } from "sonner";
 
 const Notifications = () => {
   const { data, isLoading } = useGetAllNotifications();
   const notifications = data ?? [];
-  const setSelectedTaskId = useTaskStore((state) => state.setSelectedTaskId);
+  const { setSelectedTaskId } = useTaskStore();
   const openContextPanel = useGlobalStore((state) => state.openContextPanel);
   const markAsRead = useMarkAsRead();
   const handleMarkAsRead = (id: string) => {
