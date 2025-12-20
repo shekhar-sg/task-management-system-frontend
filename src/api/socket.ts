@@ -3,7 +3,7 @@ import { io, type Socket } from "socket.io-client";
 let socket: Socket | null = null;
 
 export const connectSocket = () => {
-  socket = io(import.meta.env.VITE_API_BASE_URL.replace("/api", ""), {
+  socket = io("/", {
     withCredentials: true,
     autoConnect: true,
   });
