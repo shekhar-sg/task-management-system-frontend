@@ -12,7 +12,6 @@ api.interceptors.response.use(
   (error) => {
     const status = error?.response?.status;
     if (status === 401) {
-      // Optionally handle unauthorized errors globally
       const { clearUser } = useAuthStore.getState();
       clearUser();
       disconnectSocket();

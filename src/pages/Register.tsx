@@ -1,22 +1,24 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { Link, Navigate } from "react-router-dom";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { type LoginFormValues, loginSchema, useAuthStore, useLogin } from "@/modules/auth/";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Link, Navigate } from "react-router-dom";
+import { type RegisterFormValues, registerSchema, useAuthStore, useRegister } from "@/modules/auth";
 
-const Login = () => {
-  const { mutate: login, isPending, error } = useLogin();
+const Register = () => {
+  const { mutate: register, isPending, error } = useRegister();
   const { isAuthenticated } = useAuthStore();
 
-  const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -24,20 +26,38 @@ const Login = () => {
     return <Navigate to="/" replace />;
   }
 
-  const onSubmit = (data: LoginFormValues) => {
-    login(data);
+  const onSubmit = (data: RegisterFormValues) => {
+    const { confirmPassword, ...registerData } = data;
+    register(registerData);
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Welcome Back</CardTitle>
-          <CardDescription className="text-center">Sign in to your account to continue</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">Create an Account</CardTitle>
+          <CardDescription className="text-center">Enter your details to get started</CardDescription>
         </CardHeader>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent>
             <FieldGroup>
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="name">Name</FieldLabel>
+                    <Input
+                      {...field}
+                      id="name"
+                      type="text"
+                      placeholder="John Doe"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
               <Controller
                 name="email"
                 control={form.control}
@@ -65,7 +85,24 @@ const Login = () => {
                       {...field}
                       id="password"
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder="Create a password"
+                      aria-invalid={fieldState.invalid}
+                    />
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="confirmPassword"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+                    <Input
+                      {...field}
+                      id="confirmPassword"
+                      type="password"
+                      placeholder="Confirm your password"
                       aria-invalid={fieldState.invalid}
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -75,18 +112,18 @@ const Login = () => {
             </FieldGroup>
             {error && (
               <Alert variant="destructive" className="text-sm mt-4">
-                {error.message || "Login failed. Please try again."}
+                {error.message || "Registration failed. Please try again."}
               </Alert>
             )}
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button type="submit" disabled={isPending} className="w-full">
-              {isPending ? "Signing in..." : "Sign in"}
+              {isPending ? "Creating account..." : "Create account"}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{" "}
-              <Link to="/register" className="text-primary hover:underline font-medium">
-                Register here
+              Already have an account?{" "}
+              <Link to="/login" className="text-primary hover:underline font-medium">
+                Login here
               </Link>
             </p>
           </CardFooter>
@@ -96,4 +133,5 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
+

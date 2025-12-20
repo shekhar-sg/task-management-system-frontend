@@ -1,9 +1,14 @@
 import { api } from "@/api/axios";
-import type { GetProfilePayload, LoginPayload, LoginResponse, User } from "./auth.types";
+import type { GetProfilePayload, LoginPayload, LoginResponse, RegisterPayload, RegisterResponse, User } from "./auth.types";
 
 export const authService = {
   login: async (payload: LoginPayload): Promise<LoginResponse> => {
     const { data } = await api.post<LoginResponse>("auth/login", payload);
+    return data;
+  },
+
+  register: async (payload: RegisterPayload): Promise<RegisterResponse> => {
+    const { data } = await api.post<RegisterResponse>("auth/register", payload);
     return data;
   },
 

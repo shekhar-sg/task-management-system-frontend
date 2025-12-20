@@ -16,6 +16,19 @@ export const useLogin = () => {
   });
 };
 
+export const useRegister = () => {
+  const setUser = useAuthStore((state) => state.setUser);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: authService.register,
+    onSuccess: (data) => {
+      setUser(data.user);
+      queryClient.setQueryData(["currentUser"], data);
+      connectSocket();
+    },
+  });
+};
+
 export const useLogout = () => {
   const clearUser = useAuthStore((state) => state.clearUser);
   return useMutation({
