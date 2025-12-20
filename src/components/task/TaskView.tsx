@@ -1,15 +1,9 @@
-import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import type { Task } from "@/modules/tasks";
-import TaskForm from "./TaskForm";
-
-interface TaskViewProps {
-  task: Task;
-  onClose?: () => void;
-}
+import { type Task, useTaskStore } from "@/modules/tasks";
+import { useGlobalStore } from "@/stores/global.store";
 
 export const getPriorityColor = (priority: Task["priority"]) => {
   switch (priority) {
@@ -41,24 +35,19 @@ export const getStatusColor = (status: Task["status"]) => {
   }
 };
 
-const TaskView = ({ task, onClose }: TaskViewProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-  // const { data: task, isLoading:taskLoading } = useGetTaskById(id);
+const TaskView = () => {
+  const { selectedTask: task, setSelectedTask } = useTaskStore();
+  const { openContextPanel, closeContextPanel: onClose } = useGlobalStore();
 
-  if (isEditing) {
-    return (
-      <TaskForm
-        mode="update"
-        task={task}
-        onSuccess={() => {
-          setIsEditing(false);
-        }}
-        onCancel={() => {
-          setIsEditing(false);
-        }}
-      />
-    );
+  if (!task) {
+    return <div>No task selected.</div>;
   }
+
+  const handleEdit = () => {
+    openContextPanel("TASK_UPDATE");
+    setSelectedTask(task);
+  };
+
   const formatDate = (date: Date | string | undefined) => {
     if (!date) return "Not set";
     const d = new Date(date);
@@ -82,7 +71,7 @@ const TaskView = ({ task, onClose }: TaskViewProps) => {
               {task.updatedAt && task.updatedAt !== task.createdAt && <> • Updated {formatDate(task.updatedAt)}</>}
             </CardDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+          <Button variant="outline" size="sm" onClick={handleEdit}>
             Edit
           </Button>
         </div>

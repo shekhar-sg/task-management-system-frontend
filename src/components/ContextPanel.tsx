@@ -1,32 +1,46 @@
-import type { ReactNode } from "react";
+import { useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
+import Notifications from "@/components/notification/Notifications";
+import TaskForm from "@/components/task/TaskForm";
+import TaskView from "@/components/task/TaskView";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/stores/global.store";
 
-interface ContextPanelProps {
-  children?: ReactNode;
-}
-
-const ContextPanel = (props: ContextPanelProps) => {
-  const { children } = props;
+const ContextPanel = () => {
   const isBelowXl = useMediaQuery({ maxWidth: 1279 });
-  const { isContextPanelOpen, contextType, closeContextPanel } = useGlobalStore();
+  const { contextType, isContextPanelOpen, closeContextPanel } = useGlobalStore();
 
-  const Title = (() => {
+  const panelContent = useMemo(() => {
     switch (contextType) {
       case "TASK_DETAILS":
-        return "Task Details";
+        return {
+          title: "Task Details",
+          content: <TaskView />,
+        };
       case "TASK_CREATE":
-        return "Create Task";
+        return {
+          title: "Create Task",
+          content: <TaskForm mode={"create"} />,
+        };
       case "TASK_UPDATE":
-        return "Update Task";
+        return {
+          title: "Update Task",
+          content: <TaskForm mode={"update"} />,
+        };
       case "NOTIFICATIONS":
-        return "Notifications";
+        return {
+          title: "Notifications",
+          content: <Notifications />,
+        };
+      default:
+        return null;
     }
-  })();
+  }, [contextType]);
 
-  if (!isContextPanelOpen) return null;
+  if (!(isContextPanelOpen && panelContent)) return null;
+
+  const { title, content } = panelContent;
 
   return (
     <>
@@ -35,12 +49,12 @@ const ContextPanel = (props: ContextPanelProps) => {
           <SheetContent className="[&>button]:hidden p-0 overflow-hidden max-md:min-w-full">
             <div className="flex h-full overflow-hidden flex-col border bg-background w-full xl:w-[500px]">
               <div className="flex items-center justify-between bg-background min-h-16 px-6 border-b">
-                <h6 className="text-xl font-semibold">{Title}</h6>
+                <h6 className="text-xl font-semibold">{title}</h6>
                 <button onClick={closeContextPanel} className="text-muted-foreground hover:text-foreground">
                   ✕
                 </button>
               </div>
-              <div className="w-full h-full overflow-y-auto p-3">{children}</div>
+              <div className="w-full h-full overflow-y-auto p-3">{content}</div>
             </div>
           </SheetContent>
         </Sheet>
@@ -53,12 +67,12 @@ const ContextPanel = (props: ContextPanelProps) => {
         >
           <div className="flex h-full shadow-inner_soft overflow-hidden rounded-xl flex-col border bg-card w-full md:w-[400px]">
             <div className="flex items-center justify-between bg-background min-h-16 px-6">
-              <h6 className="text-xl font-semibold">{Title}</h6>
+              <h6 className="text-xl font-semibold">{title}</h6>
               <button onClick={closeContextPanel} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>
             </div>
-            <div className="w-full h-full overflow-y-auto p-3">{children}</div>
+            <div className="w-full h-full overflow-y-auto p-3">{content}</div>
           </div>
         </div>
       )}

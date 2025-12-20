@@ -1,7 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -9,35 +5,40 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 import {
-  type CreateTaskInput,
-  createTaskSchema,
-  type Task,
-  type UpdateTaskInput,
-  updateTaskSchema,
-  useCreateTask,
-  useUpdateTask,
+    type CreateTaskInput,
+    createTaskSchema,
+    type Task,
+    type UpdateTaskInput,
+    updateTaskSchema,
+    useCreateTask,
+    useTaskStore,
+    useUpdateTask,
 } from "@/modules/tasks";
 import { useGetAllUsers } from "@/modules/users/user.hook";
+import { useGlobalStore } from "@/stores/global.store";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface TaskFormProps {
   mode: "create" | "update";
-  task?: Task;
-  onSuccess?: () => void;
-  onCancel?: () => void;
 }
 
-const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
+const TaskForm = ({ mode }: TaskFormProps) => {
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
+  const { selectedTask: task, setSelectedTask } = useTaskStore();
+  const { closeContextPanel, openContextPanel } = useGlobalStore();
   const { data } = useGetAllUsers();
 
   const form = useForm<CreateTaskInput | UpdateTaskInput>({
@@ -51,18 +52,14 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
       ...(mode === "update" && { status: task?.status || "TODO" }),
     },
   });
-  useEffect(() => {
-    if (task && mode === "update") {
-      form.reset({
-        title: task.title,
-        description: task.description || "",
-        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : "",
-        priority: task.priority,
-        assignedToId: task.assignedToId || "",
-        status: task.status,
-      });
-    }
-  }, [task, mode, form]);
+
+  const handleSuccess = useCallback(
+    (task: Task) => {
+      setSelectedTask(task);
+      openContextPanel("TASK_DETAILS");
+    },
+    [openContextPanel, setSelectedTask]
+  );
 
   function onSubmit(data: CreateTaskInput | UpdateTaskInput) {
     const payload = {
@@ -72,10 +69,10 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
 
     if (mode === "create") {
       createTask.mutate(payload as CreateTaskInput, {
-        onSuccess: () => {
+        onSuccess: (task) => {
           toast.success("Task created successfully!");
           form.reset();
-          onSuccess?.();
+          handleSuccess(task);
         },
         onError: (error) => {
           toast.error(`Failed to create task: ${error.message}`);
@@ -85,9 +82,10 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
       updateTask.mutate(
         { id: task.id, payload: payload as UpdateTaskInput },
         {
-          onSuccess: () => {
+          onSuccess: (task) => {
             toast.success("Task updated successfully!");
-            onSuccess?.();
+            console.log({ task });
+            handleSuccess(task);
           },
           onError: (error) => {
             toast.error(`Failed to update task: ${error.message}`);
@@ -250,11 +248,9 @@ const TaskForm = ({ mode, task, onSuccess, onCancel }: TaskFormProps) => {
         </form>
       </CardContent>
       <CardFooter className="flex gap-2">
-        {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-            Cancel
-          </Button>
-        )}
+        <Button type="button" variant="outline" onClick={closeContextPanel} disabled={isSubmitting}>
+          Cancel
+        </Button>
         <Button type="button" variant="outline" onClick={() => form.reset()} disabled={isSubmitting}>
           Reset
         </Button>

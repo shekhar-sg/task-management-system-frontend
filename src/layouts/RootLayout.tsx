@@ -1,20 +1,34 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Outlet } from "react-router-dom";
-import { registerTaskSocketEvents } from "@/modules/tasks";
+import ContextPanel from "@/components/ContextPanel";
+import { cn } from "@/lib/utils";
+import { useRegisterTaskSocketEvents } from "@/modules/tasks";
+import { useGlobalStore } from "@/stores/global.store";
 
 const RootLayout = () => {
-  const queryClient = useQueryClient();
+  useRegisterTaskSocketEvents();
+  const { isContextPanelOpen, closeContextPanel } = useGlobalStore();
+  const isBelowLg = useMediaQuery({ maxWidth: 1024 });
+
   useEffect(() => {
-    registerTaskSocketEvents(queryClient);
-  }, [queryClient]);
+    if (isBelowLg) {
+      closeContextPanel();
+    }
+  }, [isBelowLg, closeContextPanel]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <main>
+    <main className={"flex h-svh min-h-svh overflow-hidden bg-background gap-2 p-0 md:p-2 relative"}>
+      <div
+        className={cn(
+          "flex flex-1 overflow-hidden rounded-xl flex-col shadow-inner border transition-all duration-300 ease-in-out",
+          isContextPanelOpen ? "xl:mr-[calc(400px+0.5rem)]" : "xl:mr-0"
+        )}
+      >
         <Outlet />
-      </main>
-    </div>
+      </div>
+      <ContextPanel />
+    </main>
   );
 };
 
