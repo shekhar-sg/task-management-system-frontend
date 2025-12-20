@@ -1,6 +1,6 @@
-import type {QueryClient} from "@tanstack/react-query";
-import {getSocket} from "@/api/socket";
-import {TASKS_QUERY_KEYS} from "@/modules/tasks/task.hooks";
+import type { QueryClient } from "@tanstack/react-query";
+import { getSocket } from "@/api/socket";
+import { TASKS_QUERY_KEYS } from "@/modules/tasks/task.hooks";
 
 export const registerTaskSocketEvents = (queryClient: QueryClient) => {
   const socket = getSocket();
@@ -11,7 +11,7 @@ export const registerTaskSocketEvents = (queryClient: QueryClient) => {
   });
 
   socket.on("task:updated", (updatedTask) => {
-    console.log({updatedTask})
+    console.log({ updatedTask });
     queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
   });
 
@@ -20,6 +20,6 @@ export const registerTaskSocketEvents = (queryClient: QueryClient) => {
   });
 
   socket.on("task:assigned", (data) => {
-    console.log({data})
+    console.log({ data });
   });
 };

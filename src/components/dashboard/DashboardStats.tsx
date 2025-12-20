@@ -1,16 +1,16 @@
-import {TrendingDown, TrendingUp} from "lucide-react";
-import {useCallback, useMemo} from "react";
-import {Badge} from "@/components/ui/badge";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
-import {cn} from "@/lib/utils";
-import {useAuthStore} from "@/modules/auth";
-import {useGetAllNotifications} from "@/modules/notifications/notification.hooks";
-import {useTasks} from "@/modules/tasks";
-import {useTaskStore} from "@/modules/tasks/task.store";
-import {useGlobalStore} from "@/stores/global.store";
-import {useMediaQuery} from "react-responsive";
-import {useSearchParams} from "react-router-dom";
+import { TrendingDown, TrendingUp } from "lucide-react";
+import { useCallback, useMemo } from "react";
+import { useMediaQuery } from "react-responsive";
+import { useSearchParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/modules/auth";
+import { useGetAllNotifications } from "@/modules/notifications/notification.hooks";
+import { useTasks } from "@/modules/tasks";
+import { useTaskStore } from "@/modules/tasks/task.store";
+import { useGlobalStore } from "@/stores/global.store";
 
 const DashboardStats = () => {
   const { setFilters, filters } = useTaskStore();
@@ -108,7 +108,17 @@ const DashboardStats = () => {
         },
       },
     ],
-    [data, openContextPanel, setFilters, stats.assigned, stats.created, stats.overdue, toggleValue, searchParams, setSearchParams]
+    [
+      data,
+      openContextPanel,
+      setFilters,
+      stats.assigned,
+      stats.created,
+      stats.overdue,
+      toggleValue,
+      searchParams,
+      setSearchParams,
+    ]
   );
   return (
     <div className="flex flex-wrap h-fit gap-4 p-4">

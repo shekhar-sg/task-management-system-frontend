@@ -1,6 +1,6 @@
-import {api} from "@/api/axios";
-import type {User} from "@/modules/auth";
-import type {GetUsersResponse} from "@/modules/users/user.type";
+import { api } from "@/api/axios";
+import type { User } from "@/modules/auth";
+import type { GetUsersResponse } from "@/modules/users/user.type";
 
 export const UserService = {
   getAllUsers: async (): Promise<User[]> => {

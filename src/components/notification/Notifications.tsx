@@ -1,12 +1,12 @@
-import {BellRing, CheckCircle2Icon, LoaderIcon} from "lucide-react";
-import {toast} from "sonner";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardFooter} from "@/components/ui/card";
-import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
-import {useGetAllNotifications, useMarkAsRead} from "@/modules/notifications/notification.hooks";
-import type {Notification} from "@/modules/notifications/notinication.type";
-import {useTaskStore} from "@/modules/tasks";
-import {useGlobalStore} from "@/stores/global.store";
+import { BellRing, CheckCircle2Icon, LoaderIcon } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useGetAllNotifications, useMarkAsRead } from "@/modules/notifications/notification.hooks";
+import type { Notification } from "@/modules/notifications/notinication.type";
+import { useTaskStore } from "@/modules/tasks";
+import { useGlobalStore } from "@/stores/global.store";
 
 const Notifications = () => {
   const { data, isLoading } = useGetAllNotifications();

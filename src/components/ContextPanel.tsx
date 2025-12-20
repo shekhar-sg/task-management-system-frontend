@@ -1,8 +1,8 @@
-import type {ReactNode} from "react";
-import {useMediaQuery} from "react-responsive";
-import {Sheet, SheetContent} from "@/components/ui/sheet";
-import {cn} from "@/lib/utils";
-import {useGlobalStore} from "@/stores/global.store";
+import type { ReactNode } from "react";
+import { useMediaQuery } from "react-responsive";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { useGlobalStore } from "@/stores/global.store";
 
 interface ContextPanelProps {
   children?: ReactNode;

@@ -1,15 +1,16 @@
-import {api} from "@/api/axios";
+import { api } from "@/api/axios";
 import type {
   CreateTaskPayload,
   CreateTaskResponse,
-  GetAllTasksResponse, GetTaskResponse,
+  GetAllTasksResponse,
+  GetTaskResponse,
   Task,
   TaskFilter,
   UpdateTaskPayload,
 } from "@/modules/tasks/task.types.ts";
 
 export const taskService = {
-  getTaskById: async (id: string): Promise<{task: Task }> => {
+  getTaskById: async (id: string): Promise<{ task: Task }> => {
     const { data } = await api.get<GetTaskResponse>(`/tasks/${id}`);
     return data;
   },

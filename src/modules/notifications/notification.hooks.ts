@@ -1,5 +1,5 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {notificationService} from "@/modules/notifications/notification.service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { notificationService } from "@/modules/notifications/notification.service";
 
 export const NOTIFICATIONS_QUERY_KEY = ["notifications"];
 

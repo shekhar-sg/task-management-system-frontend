@@ -15,7 +15,7 @@ const App = () => {
   return (
     <>
       <RouterProvider router={router} />
-      <Toaster position={"bottom-center"}/>
+      <Toaster position={"bottom-center"} />
     </>
   );
 };

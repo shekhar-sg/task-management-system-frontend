@@ -1,5 +1,5 @@
-import {create} from "zustand";
-import type {Task, TaskFilter} from "@/modules/tasks/task.types";
+import { create } from "zustand";
+import type { Task, TaskFilter } from "@/modules/tasks/task.types";
 
 type TaskState = {
   selectedTask: Task | null;

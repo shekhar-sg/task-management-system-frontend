@@ -1,17 +1,17 @@
-import type {Row} from "@tanstack/react-table";
-import {MoreHorizontal} from "lucide-react";
-import {Button} from "@/components/ui/button";
+import type { Row } from "@tanstack/react-table";
+import { MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuShortcut,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type {Task} from "@/modules/tasks";
-import {useTaskStore} from "@/modules/tasks/task.store";
-import {useGlobalStore} from "@/stores/global.store";
-import {useAuthStore} from "@/modules/auth";
+import { useAuthStore } from "@/modules/auth";
+import type { Task } from "@/modules/tasks";
+import { useTaskStore } from "@/modules/tasks/task.store";
+import { useGlobalStore } from "@/stores/global.store";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;

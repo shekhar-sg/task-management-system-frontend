@@ -55,7 +55,7 @@ export type GetAllTasksResponse = {
 };
 
 export type TaskFilter = {
-  view?: string
+  view?: string;
   status?: string;
   priority?: string;
   sortByDueDate?: "asc" | "desc";

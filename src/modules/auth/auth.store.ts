@@ -1,5 +1,5 @@
-import {create} from "zustand";
-import type {User} from "@/modules/auth/auth.types.ts";
+import { create } from "zustand";
+import type { User } from "@/modules/auth/auth.types.ts";
 
 type AuthState = {
   user: User | null;

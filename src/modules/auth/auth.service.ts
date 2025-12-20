@@ -1,5 +1,5 @@
-import {api} from "@/api/axios";
-import type {GetProfilePayload, LoginPayload, LoginResponse, User} from "./auth.types";
+import { api } from "@/api/axios";
+import type { GetProfilePayload, LoginPayload, LoginResponse, User } from "./auth.types";
 
 export const authService = {
   login: async (payload: LoginPayload): Promise<LoginResponse> => {

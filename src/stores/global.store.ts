@@ -1,4 +1,4 @@
-import {create} from "zustand";
+import { create } from "zustand";
 
 type ContextPanelType = "TASK_DETAILS" | "TASK_CREATE" | "TASK_UPDATE" | "NOTIFICATIONS" | null;
 

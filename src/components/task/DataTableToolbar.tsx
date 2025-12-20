@@ -1,9 +1,9 @@
-import type {Table} from "@tanstack/react-table";
-import {Button} from "@/components/ui/button";
-import type {Priority, TaskStatus} from "@/modules/tasks";
-import {useTaskStore} from "@/modules/tasks/task.store";
-import {useGlobalStore} from "@/stores/global.store";
-import {DataTableFacetedFilter} from "@/components/task/DataTableFilter";
+import type { Table } from "@tanstack/react-table";
+import { DataTableFacetedFilter } from "@/components/task/DataTableFilter";
+import { Button } from "@/components/ui/button";
+import type { Priority, TaskStatus } from "@/modules/tasks";
+import { useTaskStore } from "@/modules/tasks/task.store";
+import { useGlobalStore } from "@/stores/global.store";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;

@@ -1,6 +1,6 @@
-import {BellDot} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {useGlobalStore} from "@/stores/global.store";
+import { BellDot } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useGlobalStore } from "@/stores/global.store";
 
 const ToggleNotification = () => {
   const { openContextPanel } = useGlobalStore();
