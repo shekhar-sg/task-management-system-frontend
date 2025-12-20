@@ -49,6 +49,28 @@ export const useUpdateTask = () => {
   });
 };
 
+export const useDeleteTask = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => taskService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
+    },
+  });
+};
+
+export const useDeleteMultipleTasks = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (ids: string[]) => {
+      await Promise.all(ids.map((id) => taskService.delete(id)));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
+    },
+  });
+};
+
 export const useTaskFilters = (): TaskFilter => {
   const [params] = useSearchParams();
   const getValue = (key: string) => {

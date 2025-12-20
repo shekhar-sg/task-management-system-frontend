@@ -1,11 +1,33 @@
 import DataTableRowActions from "@/components/task/DataTablRowActions";
 import { getPriorityColor, getStatusColor } from "@/components/task/TaskView";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import type { Task } from "@/modules/tasks";
 import type { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<Task>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="translate-y-[2px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="translate-y-[2px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     id: "sr",
     header: () => <span className={"max-w-[500px] truncate font-medium"}>SR No.</span>,
