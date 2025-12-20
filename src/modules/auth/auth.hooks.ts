@@ -1,15 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { connectSocket, disconnectSocket } from "@/api/socket";
 import { authService } from "@/modules/auth/auth.service";
 import { useAuthStore } from "@/modules/auth/auth.store";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: authService.login,
     onSuccess: (data) => {
       setUser(data.user);
+      queryClient.setQueryData(["currentUser"], data);
       connectSocket();
     },
   });
@@ -26,26 +27,27 @@ export const useLogout = () => {
   });
 };
 
+export const useCurrentUser = () => {
+  return useQuery({
+    queryFn: authService.me,
+    queryKey: ["currentUser"],
+  });
+};
+
 export const useAuthInit = () => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearUser = useAuthStore((state) => state.clearUser);
   const setAuthLoading = useAuthStore((state) => state.setAuthLoading);
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const data = await authService.me();
-        setUser(data.user);
-        connectSocket();
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        clearUser();
-        disconnectSocket();
-      } finally {
-        setAuthLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, [clearUser, setAuthLoading, setUser]);
+  const { data, isLoading, error } = useCurrentUser();
+  setAuthLoading(isLoading);
+  if (data) {
+    setUser(data.user);
+    connectSocket();
+  }
+  if (error) {
+    console.error("Auth check failed:", error);
+    clearUser();
+    disconnectSocket();
+  }
 };

@@ -1,6 +1,6 @@
+import { useAuthStore, useLogin } from "@/modules/auth";
 import { type FormEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuthStore, useLogin } from "@/modules/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
