@@ -1,11 +1,11 @@
-import { useMemo } from "react";
-import { useMediaQuery } from "react-responsive";
 import Notifications from "@/components/notification/Notifications";
 import TaskForm from "@/components/task/TaskForm";
 import TaskView from "@/components/task/TaskView";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useGlobalStore } from "@/stores/global.store";
+import { useMemo } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const ContextPanel = () => {
   const isBelowXl = useMediaQuery({ maxWidth: 1279 });
@@ -66,8 +66,8 @@ const ContextPanel = () => {
           )}
         >
           <div className="flex h-full shadow-inner_soft overflow-hidden rounded-xl flex-col border bg-card w-full md:w-[400px]">
-            <div className="flex items-center justify-between bg-background min-h-16 px-6">
-              <h6 className="text-xl font-semibold">{title}</h6>
+            <div className="flex items-center justify-between bg-background px-6">
+              <h6 className="text-xl font-semibold py-4">{title}</h6>
               <button onClick={closeContextPanel} className="text-muted-foreground hover:text-foreground">
                 ✕
               </button>

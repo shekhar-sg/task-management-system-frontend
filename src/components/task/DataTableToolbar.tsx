@@ -28,7 +28,7 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
   const { setSelectedTask } = useTaskStore();
   const { openContextPanel } = useGlobalStore();
   return (
-    <div className={"flex items-center justify-between p-4"}>
+    <div className={"sticky top-0 flex items-center justify-between p-4 bg-white z-40"}>
       <div className="text-sm flex items-center gap-3 text-muted-foreground">
         {table.getRowModel().rows.length} of {table.getFilteredRowModel().rows.length} results
         <DataTableFacetedFilter title="Status" paramKey="status" options={statusOptions} />

@@ -1,16 +1,16 @@
-import { LogOut } from "lucide-react";
-import { useEffect } from "react";
 import DashboardStats from "@/components/dashboard/DashboardStats";
-import DaTaTable from "@/components/dashboard/DaTaTable";
+import DataTable from "@/components/dashboard/DataTable";
 import ToggleNotification from "@/components/notification/ToggleNotification";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { columns } from "@/components/task/columns";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { Item, ItemActions, ItemContent } from "@/components/ui/item";
 import { useAuthStore, useLogout } from "@/modules/auth";
 import { useTaskFilters, useTasks } from "@/modules/tasks";
 import { useTaskStore } from "@/modules/tasks/task.store";
+import { LogOut } from "lucide-react";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const filters = useTaskFilters();
@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <>
       <div className={"flex items-center bg-background justify-between h-16 px-4"}>
-        <h6 className={"text-xl"}>Dashboard</h6>
+        <h6 className={"text-xl py-4"}>Dashboard</h6>
         <div className={"flex gap-4 items-center"}>
           <ThemeToggle />
           <ToggleNotification />
@@ -42,9 +42,9 @@ const Dashboard = () => {
           </Item>
         </div>
       </div>
-      <div className={"flex flex-col w-full h-[calc(100vh_-_72px)] shadow-inner_soft bg-card"}>
+      <div className={"flex flex-col w-full shadow-inner_soft bg-card"}>
         <DashboardStats />
-        <DaTaTable columns={columns} data={data ?? []} />
+        <DataTable columns={columns} data={data?.concat(data) ?? []} />
       </div>
     </>
   );
