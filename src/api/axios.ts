@@ -1,5 +1,5 @@
 import axios from "axios";
-import { disconnectSocket } from "@/api/socket.ts";
+import { disconnectSocket } from "@/api/socket";
 import { useAuthStore } from "@/modules/auth";
 
 export const api = axios.create({

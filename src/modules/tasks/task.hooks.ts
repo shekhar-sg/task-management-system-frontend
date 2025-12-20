@@ -3,19 +3,19 @@ import {taskService} from "@/modules/tasks/task.service";
 import type {TaskFilter, UpdateTaskPayload} from "@/modules/tasks/task.types.ts";
 import {useSearchParams} from "react-router-dom";
 
-export const TASKS_QUERY_KEY = ["tasks"];
+export const TASKS_QUERY_KEYS = ["tasks"];
 
 export const useGetTaskById = (id: string) => {
   return useQuery({
     queryFn: () => taskService.getTaskById(id),
-    queryKey: [...TASKS_QUERY_KEY],
+    queryKey: [...TASKS_QUERY_KEYS],
   });
 };
 
 export const useTasks = (filters?: TaskFilter) => {
   return useQuery({
     queryFn: () => taskService.getAll(filters),
-    queryKey: [TASKS_QUERY_KEY, filters],
+    queryKey: [...TASKS_QUERY_KEYS, ...(filters?Object.keys(filters):["all"])],
   });
 };
 
@@ -24,7 +24,7 @@ export const useCreateTask = () => {
   return useMutation({
     mutationFn: taskService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
     },
   });
 };
@@ -34,7 +34,7 @@ export const useUpdateTask = () => {
   return useMutation({
     mutationFn: ({ id, payload }: { id: string; payload: UpdateTaskPayload }) => taskService.update(id, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
     },
   });
 };
