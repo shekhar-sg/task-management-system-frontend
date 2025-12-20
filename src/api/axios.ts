@@ -1,21 +1,27 @@
-import axios from "axios";
-import { disconnectSocket } from "@/api/socket";
-import { useAuthStore } from "@/modules/auth";
+import axios, { type AxiosError, type AxiosInstance } from "axios";
 
-export const api = axios.create({
-  baseURL: "/api",
-  withCredentials: true,
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+
+export const api: AxiosInstance = axios.create({
+    baseURL: `${API_BASE_URL}/api`,
+    withCredentials: true,
+    headers: {
+        "Content-Type": "application/json",
+    },
+    timeout: 30000, // 30 seconds
 });
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const status = error?.response?.status;
-    if (status === 401) {
-      const { clearUser } = useAuthStore.getState();
-      clearUser();
-      disconnectSocket();
-    }
-    return Promise.reject(error);
-  }
-);
+export const getApiBaseUrl = (): string => API_BASE_URL;
+
+export const setupAuthInterceptor = (onUnauthorized: () => void): void => {
+    api.interceptors.response.use(
+        (response) => response,
+        (error: AxiosError) => {
+            if (error.response?.status === 401) {
+                onUnauthorized();
+            }
+            return Promise.reject(error);
+        }
+    );
+};
+

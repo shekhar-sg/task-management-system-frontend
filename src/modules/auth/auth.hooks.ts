@@ -1,7 +1,18 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { setupAuthInterceptor } from "@/api/axios";
 import { connectSocket, disconnectSocket } from "@/api/socket";
 import { authService } from "@/modules/auth/auth.service";
 import { useAuthStore } from "@/modules/auth/auth.store";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+let authInterceptorSetup = false;
+if (!authInterceptorSetup) {
+  setupAuthInterceptor(() => {
+    const { clearUser } = useAuthStore.getState();
+    clearUser();
+    disconnectSocket();
+  });
+  authInterceptorSetup = true;
+}
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
