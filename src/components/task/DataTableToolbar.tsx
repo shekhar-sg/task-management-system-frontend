@@ -5,8 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import type { Priority, TaskStatus } from "@/modules/tasks";
 import { useTaskStore } from "@/modules/tasks/task.store";
 import { useGlobalStore } from "@/stores/global.store";
-import { X } from "lucide-react";
+import { X, ArrowUpDown, ArrowUp, ArrowDown, Clock } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -80,6 +86,20 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
     setSearchParams(params);
   };
 
+  const setSortByDueDate = (sort: "asc" | "desc") => {
+    params.set("sortByDueDate", sort);
+    setSearchParams(params);
+  };
+
+  const toggleOverdue = () => {
+    if (overdue) {
+      params.delete("overdue");
+    } else {
+      params.set("overdue", "true");
+    }
+    setSearchParams(params);
+  };
+
   const getFilterLabel = (type: "status" | "priority" | "view" | "sort", value: string) => {
     let options: { label: string; value: string }[];
     switch (type) {
@@ -111,6 +131,39 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
           <DataTableFacetedFilter title="View" paramKey="view" options={viewOptions} />
           <DataTableFacetedFilter title="Status" paramKey="status" options={statusOptions} />
           <DataTableFacetedFilter title="Priority" paramKey="priority" options={priorityOptions} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="default" className="h-8">
+                {sortByDueDate === "asc" ? (
+                  <ArrowUp className="mr-2 h-4 w-4" />
+                ) : sortByDueDate === "desc" ? (
+                  <ArrowDown className="mr-2 h-4 w-4" />
+                ) : (
+                  <ArrowUpDown className="mr-2 h-4 w-4" />
+                )}
+                Sort
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem onClick={() => setSortByDueDate("asc")}>
+                <ArrowUp className="mr-2 h-4 w-4" />
+                Due Date: Earliest First
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortByDueDate("desc")}>
+                <ArrowDown className="mr-2 h-4 w-4" />
+                Due Date: Latest First
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button
+            variant={overdue ? "default" : "outline"}
+            size="default"
+            className="h-8"
+            onClick={toggleOverdue}
+          >
+            <Clock className="mr-2 h-4 w-4" />
+            Overdue
+          </Button>
         </div>
         <Button
           variant="default"
@@ -124,6 +177,7 @@ const DataTableToolbar = <TData,>(props: DataTableToolbarProps<TData>) => {
           Create Task
         </Button>
       </div>
+      {/* ...existing filter chips code... */}
 
       {hasFilters && (
         <div className="flex flex-wrap items-center gap-2">
