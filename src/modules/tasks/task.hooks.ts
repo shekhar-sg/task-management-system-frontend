@@ -17,7 +17,7 @@ export const useTasks = (filters?: TaskFilter) => {
   const queryClient = useQueryClient();
   const result = useQuery({
     queryFn: () => taskService.getAll(filters),
-    queryKey: [...TASKS_QUERY_KEYS, ...(filters ? Object.keys(filters) : ["all"])],
+    queryKey: [...TASKS_QUERY_KEYS, ...(filters ? Object.entries(filters) : ["all"])],
   });
   if (result.data) {
     result.data.forEach((task) => {

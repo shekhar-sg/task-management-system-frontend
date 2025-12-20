@@ -1,16 +1,16 @@
+import { LogOut } from "lucide-react";
+import { useEffect } from "react";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import DataTable from "@/components/dashboard/DataTable";
 import ToggleNotification from "@/components/notification/ToggleNotification";
-import { columns } from "@/components/task/columns";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { columns } from "@/components/task/columns";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { Item, ItemActions, ItemContent } from "@/components/ui/item";
 import { useAuthStore, useLogout } from "@/modules/auth";
 import { useTaskFilters, useTasks } from "@/modules/tasks";
 import { useTaskStore } from "@/modules/tasks/task.store";
-import { LogOut } from "lucide-react";
-import { useEffect } from "react";
 
 const Dashboard = () => {
   const filters = useTaskFilters();
@@ -44,7 +44,7 @@ const Dashboard = () => {
       </div>
       <div className={"flex flex-col w-full shadow-inner_soft bg-card"}>
         <DashboardStats />
-        <DataTable columns={columns} data={data?.concat(data) ?? []} />
+        <DataTable columns={columns} data={data ?? []} />
       </div>
     </>
   );

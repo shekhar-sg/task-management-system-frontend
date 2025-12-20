@@ -1,10 +1,9 @@
-import { TrendingDown, TrendingUp } from "lucide-react";
+import clsx from "clsx";
 import { useCallback, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useSearchParams } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/modules/auth";
 import { useGetAllNotifications } from "@/modules/notifications/notification.hooks";
@@ -34,11 +33,14 @@ const DashboardStats = () => {
       overdue,
     };
   }, [tasks, userId]);
+
   const selectedValues = searchParams.get("view")?.split(",") || [];
+
   const clearFilters = useCallback(() => {
     searchParams.delete("view");
     setSearchParams(searchParams);
   }, [searchParams, setSearchParams]);
+
   const toggleValue = useCallback(
     (value: string) => {
       const current = new Set(selectedValues);
@@ -56,14 +58,13 @@ const DashboardStats = () => {
     },
     [searchParams, setSearchParams, selectedValues, clearFilters]
   );
+
   const cardStats = useMemo(
     () => [
       {
         statFor: "CREATED",
         title: "Total Tasks Created",
         value: stats.created,
-        trend: "+12.5%",
-        trendIcon: <TrendingUp />,
         description: "That you have created",
         actionFor: "",
         action: () => {
@@ -75,8 +76,6 @@ const DashboardStats = () => {
         statFor: "ASSIGNED",
         title: "Total Tasks Assigned",
         value: stats.assigned,
-        trend: "-8.3%",
-        trendIcon: <TrendingDown />,
         description: "That are assigned to you",
         action: () => {
           toggleValue("ASSIGNED");
@@ -87,11 +86,9 @@ const DashboardStats = () => {
         statFor: "OVERDUE",
         title: "Overdue Tasks",
         value: stats.overdue,
-        trend: "+5.0%",
-        trendIcon: <TrendingUp />,
         description: "That are overdue",
         action: () => {
-          searchParams.set("overdue", "true");
+          searchParams.has("overdue") ? searchParams.delete("overdue") : searchParams.set("overdue", "true");
           setSearchParams(searchParams);
           setFilters({ overdue: true });
         },
@@ -100,8 +97,6 @@ const DashboardStats = () => {
         statFor: "NOTIFICATIONS",
         title: "Notifications",
         value: data ? data.length : 0,
-        trend: "+20.0%",
-        trendIcon: <TrendingUp />,
         description: "Total notifications received",
         action: () => {
           openContextPanel("NOTIFICATIONS");
@@ -121,49 +116,60 @@ const DashboardStats = () => {
     ]
   );
   return (
-    <div className="flex flex-wrap h-fit gap-4 p-4">
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 p-2 sm:p-4">
       {cardStats.map((card) => {
+        const isCreatedActive = card.statFor === "CREATED" && filters?.view?.includes("CREATED");
+        const isAssignedActive = card.statFor === "ASSIGNED" && filters?.view?.includes("ASSIGNED");
+        const isOverdueActive = card.statFor === "OVERDUE" && filters?.overdue;
+        const isActive = isCreatedActive || isAssignedActive || isOverdueActive;
+
         return (
           <Card
             key={card.title + card.value}
             className={cn(
-              "flex-1",
-              card.statFor === "CREATED" && "bg-purple-200 dark:bg-purple-900",
-              card.statFor === "ASSIGNED" && "bg-blue-200 dark:bg-blue-900",
-              card.statFor === "OVERDUE" && "bg-red-200 dark:bg-red-900",
-              card.statFor === "NOTIFICATIONS" && "bg-green-200 dark:bg-green-900",
-              filters?.view?.includes("CREATED") && card.statFor === "CREATED" && "border-white dark:border-white",
-              filters?.view?.includes("ASSIGNED") && card.statFor === "ASSIGNED" && "border-white dark:border-white",
-              filters?.overdue && card.statFor === "OVERDUE" && "border-white dark:border-white"
+              "transition-all duration-200 ease-in-out active:scale-[0.98]",
+              clsx({
+                // Mobile/Tablet behavior
+                "cursor-pointer hover:scale-[1.02] hover:shadow-lg": isBelowLg,
+                "hover:shadow-md": !isBelowLg,
+
+                // Base colors
+                "bg-purple-100 dark:bg-purple-950 border-purple-300 dark:border-purple-800":
+                  card.statFor === "CREATED",
+                "bg-blue-100 dark:bg-blue-950 border-blue-300 dark:border-blue-800": card.statFor === "ASSIGNED",
+                "bg-red-100 dark:bg-red-950 border-red-300 dark:border-red-800": card.statFor === "OVERDUE",
+                "bg-green-100 dark:bg-green-950 border-green-300 dark:border-green-800":
+                  card.statFor === "NOTIFICATIONS",
+
+                // Active state
+                "ring-2 ring-offset-2 shadow-lg": isActive,
+
+                // Active state colors
+                "ring-purple-500 dark:ring-purple-400 bg-purple-200 dark:bg-purple-900": isCreatedActive,
+                "ring-blue-500 dark:ring-blue-400 bg-blue-200 dark:bg-blue-900": isAssignedActive,
+                "ring-red-500 dark:ring-red-400 bg-red-200 dark:bg-red-900": isOverdueActive,
+              })
             )}
-            {...(isBelowLg && { onClick: card.action, role: "button" })}
+            {...(isBelowLg && { onClick: card.action, role: "button", tabIndex: 0 })}
           >
-            <CardHeader className={"flex-row max-sm:p-3 justify-between items-start"}>
-              <div>
-                <CardTitle className={"lg:text-2xl text-nowrap"}>{card.title}</CardTitle>
-                <CardDescription className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            <CardHeader className="p-3 sm:p-6 space-y-0">
+              <div className="flex flex-col gap-1.5 sm:gap-2">
+                <CardTitle className="text-xs sm:text-base lg:text-lg font-semibold line-clamp-2 leading-tight">
+                  {card.title}
+                </CardTitle>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold tabular-nums tracking-tight">
                   {card.value}
-                </CardDescription>
+                </div>
               </div>
-              <Badge className={"hidden"}>
-                <TrendingUp />
-                +12.5%
-              </Badge>
             </CardHeader>
-            <CardContent className={"hidden lg:block"}>
-              <div className="line-clamp-1 flex gap-2 font-medium">
-                The tasks <TrendingDown className="size-4" />
-              </div>
-              <div className="text-muted-foreground">{card.description}</div>
-            </CardContent>
-            <CardFooter className={"items-center hidden md:flex justify-between gap-1.5 text-sm"}>
-              <CardDescription className={"text-lg font-semibold"}>
+            <CardFooter className="hidden md:flex items-center justify-between gap-1.5 text-sm pt-0 pb-4 px-6">
+              <CardDescription className="text-xs sm:text-sm font-medium">
                 Check all {card.statFor.toLowerCase()}
               </CardDescription>
               <Button
-                variant={"default"}
-                size={"default"}
-                className={"bg-card font-bold shadow-success text-success-foreground"}
+                variant="default"
+                size="sm"
+                className="font-semibold shadow-sm hover:shadow-md transition-shadow text-xs"
                 onClick={card.action}
               >
                 Show in list
