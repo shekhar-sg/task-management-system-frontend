@@ -41,7 +41,7 @@ export const priorityOptions: { label: string; value: Priority }[] = [
 export const statusOptions: { label: string; value: TaskStatus }[] = [
   { label: "To Do", value: "TODO" },
   { label: "In Progress", value: "IN_PROGRESS" },
-  { label: "Done", value: "REVIEW" },
+  { label: "Review", value: "REVIEW" },
   { label: "Completed", value: "COMPLETED" },
 ];
 
