@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { useAuthStore } from "@/modules/auth";
 import { type Task, useGetTaskById, useTaskStore } from "@/modules/tasks";
 import { useGlobalStore } from "@/stores/global.store";
 
@@ -36,6 +37,7 @@ export const getStatusColor = (status: Task["status"]) => {
 };
 
 const TaskView = () => {
+  const { userId } = useAuthStore();
   const { selectedTask, setSelectedTask, selectedTaskId } = useTaskStore();
   const { openContextPanel, closeContextPanel: onClose } = useGlobalStore();
   const { data } = useGetTaskById(!selectedTask && selectedTaskId ? selectedTaskId : undefined);
@@ -72,9 +74,11 @@ const TaskView = () => {
               {task.updatedAt && task.updatedAt !== task.createdAt && <> • Updated {formatDate(task.updatedAt)}</>}
             </CardDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={handleEdit}>
-            Edit
-          </Button>
+          {(task.creatorId === userId || task.assignedToId === userId) && (
+            <Button variant="outline" size="sm" onClick={handleEdit}>
+              Edit
+            </Button>
+          )}
         </div>
       </CardHeader>
       <CardContent className="space-y-6">

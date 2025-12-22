@@ -26,7 +26,7 @@ export const useRegisterTaskSocketEvents = () => {
   socket.on("task:assigned", (data: { assignedBy: string; title: string }) => {
     void queryClient.invalidateQueries({ queryKey: TASKS_QUERY_KEYS });
     toast.success("Task assigned", {
-      description: `"${data.title}" has been assigned to ${data.assignedBy}`,
+      description: `"Task ${data.title}" has been assigned to you by ${data.assignedBy}`,
     });
   });
 
