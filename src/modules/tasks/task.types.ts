@@ -1,3 +1,5 @@
+import type {User} from "@/modules/auth";
+
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "REVIEW" | "COMPLETED";
 export type Priority = "LOW" | "MEDIUM" | "HIGH" | "URGENT";
 
@@ -5,21 +7,15 @@ export type Task = {
   id: string;
   title: string;
   description?: string;
-  dueDate?: Date;
+  dueDate: Date;
   priority: Priority;
   status: TaskStatus;
   creatorId: string;
-  creator: {
-    name: string;
-  };
+  creator: User;
   assignedToId?: string;
-  assignedTo?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-  createdAt: Date;
-  updatedAt: Date;
+  assignedTo?: User;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type CreateTaskPayload = {

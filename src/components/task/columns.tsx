@@ -1,10 +1,10 @@
 import DataTableRowActions from "@/components/task/DataTablRowActions";
-import { getPriorityColor, getStatusColor } from "@/components/task/TaskView";
-import { Badge } from "@/components/ui/badge";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { Task } from "@/modules/tasks";
-import type { ColumnDef } from "@tanstack/react-table";
+import {getPriorityColor, getStatusColor} from "@/components/task/TaskView";
+import {Badge} from "@/components/ui/badge";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import type {Task} from "@/modules/tasks";
+import type {ColumnDef} from "@tanstack/react-table";
 
 export const columns: ColumnDef<Task>[] = [
   {
@@ -107,7 +107,18 @@ export const columns: ColumnDef<Task>[] = [
     cell: ({ row }) => {
       return (
         <div>
-          <Badge variant={"outline"}>{row.original.creator.name}</Badge>
+          <Badge variant={"outline"} className={"text-nowrap"}>{row.original.creator.name}</Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "assignedTo",
+    header: "Assigned To",
+    cell: ({ row }) => {
+      return (
+        <div>
+          <Badge variant={"outline"} className={"text-nowrap"}>{row.original.assignedTo?.name ?? "Unassigned"}</Badge>
         </div>
       );
     },

@@ -1,15 +1,15 @@
 import clsx from "clsx";
-import { useCallback, useMemo } from "react";
-import { useMediaQuery } from "react-responsive";
-import { useSearchParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/modules/auth";
-import { useGetAllNotifications } from "@/modules/notifications/notification.hooks";
-import { useTasks } from "@/modules/tasks";
-import { useTaskStore } from "@/modules/tasks/task.store";
-import { useGlobalStore } from "@/stores/global.store";
+import {useCallback, useMemo} from "react";
+import {useMediaQuery} from "react-responsive";
+import {useSearchParams} from "react-router-dom";
+import {Button} from "@/components/ui/button";
+import {Card, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {cn} from "@/lib/utils";
+import {useAuthStore} from "@/modules/auth";
+import {useGetAllNotifications} from "@/modules/notifications/notification.hooks";
+import {useTasks} from "@/modules/tasks";
+import {useTaskStore} from "@/modules/tasks/task.store";
+import {useGlobalStore} from "@/stores/global.store";
 
 const DashboardStats = () => {
   const { setFilters, filters } = useTaskStore();
@@ -24,7 +24,7 @@ const DashboardStats = () => {
     const assigned = tasks.filter((t) => t.assignedToId === userId).length;
     const overdue = tasks.filter((t) => {
       if (!t.dueDate) return false;
-      return new Date(t.dueDate) < new Date();
+      return new Date(t.dueDate) < new Date() && t.assignedToId === userId;
     }).length;
 
     return {
@@ -134,8 +134,7 @@ const DashboardStats = () => {
                 "hover:shadow-md": !isBelowLg,
 
                 // Base colors
-                "bg-purple-100 dark:bg-purple-950 border-purple-300 dark:border-purple-800":
-                  card.statFor === "CREATED",
+                "bg-purple-100 dark:bg-purple-950 border-purple-300 dark:border-purple-800": card.statFor === "CREATED",
                 "bg-blue-100 dark:bg-blue-950 border-blue-300 dark:border-blue-800": card.statFor === "ASSIGNED",
                 "bg-red-100 dark:bg-red-950 border-red-300 dark:border-red-800": card.statFor === "OVERDUE",
                 "bg-green-100 dark:bg-green-950 border-green-300 dark:border-green-800":
