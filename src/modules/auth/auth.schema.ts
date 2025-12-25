@@ -1,8 +1,11 @@
-import { z } from "zod";
+import {z} from "zod";
 
 export const loginSchema = z.object({
   email: z.email({ error: "Invalid email address" }),
-  password: z.string({ error: "Password is required" }).min(6, { error: "Password must be at least 6 characters" }),
+  password: z
+    .string({ error: "Password is required" })
+    .trim()
+    .min(6, { error: "Password must be at least 8 characters" }),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
@@ -16,7 +19,8 @@ export const registerSchema = z
     email: z.email({ error: "Invalid email address" }),
     password: z
       .string({ error: "Password is required" })
-      .min(6, { error: "Password must be at least 6 characters" })
+      .trim()
+      .min(6, { error: "Password must be at least 8 characters" })
       .max(100, { error: "Password must not exceed 100 characters" }),
     confirmPassword: z.string({ error: "Please confirm your password" }),
   })
