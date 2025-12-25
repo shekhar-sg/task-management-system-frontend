@@ -1,3 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -5,30 +9,26 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupText, InputGroupTextarea } from "@/components/ui/input-group";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-    type CreateTaskInput,
-    createTaskSchema,
-    type Task,
-    type UpdateTaskInput,
-    updateTaskSchema,
-    useCreateTask,
-    useTaskStore,
-    useUpdateTask,
+  type CreateTaskInput,
+  createTaskSchema,
+  type Task,
+  type UpdateTaskInput,
+  updateTaskSchema,
+  useCreateTask,
+  useTaskStore,
+  useUpdateTask,
 } from "@/modules/tasks";
 import { useGetAllUsers } from "@/modules/users/user.hook";
 import { useGlobalStore } from "@/stores/global.store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 interface TaskFormProps {
   mode: "create" | "update";
@@ -52,6 +52,19 @@ const TaskForm = ({ mode }: TaskFormProps) => {
       ...(mode === "update" && { status: task?.status || "TODO" }),
     },
   });
+
+  useEffect(() => {
+    if (task && mode === "update") {
+      form.reset({
+        title: task.title,
+        description: task.description || "",
+        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 16) : "",
+        priority: task.priority,
+        assignedToId: task.assignedToId || "",
+        status: task.status,
+      });
+    }
+  }, [task, mode, form]);
 
   const handleSuccess = useCallback(
     (task: Task) => {
